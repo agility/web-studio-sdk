@@ -1,10 +1,10 @@
 {
-  "name": "web-studio-sdk",
+  "name": "@agility/web-studio-sdk",
   "version": "0.1.0",
   "description": "Standard Development Kit used to enable Web Studio features in Agility CMS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agility/web-studio-sdk.git"
+    "url": "git+https://github.com/agility/web-studio-sdk.git"
   },
   "bugs": {
     "url": "https://github.com/agility/web-studio-sdk.git/issues"
