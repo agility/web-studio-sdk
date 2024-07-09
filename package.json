@@ -2,12 +2,35 @@
   "name": "web-studio-sdk",
   "version": "0.1.0",
   "description": "Standard Development Kit used to enable Web Studio features in Agility CMS",
-  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agility/web-studio-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/agility/web-studio-sdk.git/issues"
+  },
+  "homepage": "https://github.com/agility/web-studio-sdk.git#readme",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">= 18.0.0"
+  },
   "scripts": {
     "build": "node build.js"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "typescript",
+    "agility",
+    "cms",
+    "headlesscms",
+    "web-studio-sdk"
+  ],
+  "author": "Agility CMS",
+  "contributors": [
+    "Dakotah Godfrey",
+    "Joel Varty"
+  ],
+  "license": "MIT",
   "devDependencies": {
     "esbuild": "0.23.0",
     "esbuild-sass-plugin": "^3.3.1",
