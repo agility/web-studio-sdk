@@ -1,3 +1,5 @@
+import { generateCSS } from "./generateCSS"
+
 export const initCSSAndPreviewPanel = () => {
   //hide the preview bar UI if it's there
   const previewBar = document.body.querySelector<HTMLElement>(
@@ -11,10 +13,13 @@ export const initCSSAndPreviewPanel = () => {
   if (!document.body.classList.contains("agility-live-preview")) {
     document.body.classList.add("agility-live-preview")
     const cssLink = document.createElement("link")
-    //TODO: change this link to be from a CDN...
-    cssLink.href = "./agility-live-preview.css"
+    const isDEV = process.env.NODE_ENV === "development"
+    cssLink.href = isDEV
+      ? "http://127.0.0.1:8080/web-studio.css"
+      : "https://cdn.aglty.io/content-manager/css/web-studio.css"
     cssLink.rel = "stylesheet"
     cssLink.type = "text/css"
+    console.log("cssLink", cssLink)
     document.head.appendChild(cssLink)
   }
 }
