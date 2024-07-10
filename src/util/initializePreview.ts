@@ -16,6 +16,7 @@ export const initializePreview = ({
   setIsInitialized(true)
 
   //ONLY proceed if we are in an iframe with a legit parent
+  // The parent window should be the PreviewIFrame
   if (!window.parent || !window.parent.postMessage) return
   if (window.self === window.top) return
 
@@ -24,6 +25,7 @@ export const initializePreview = ({
   let currentPath = location.pathname
   setInterval(() => {
     //see if the path has changed (popstate is not reliable here...)
+
     if (location.pathname !== currentPath) {
       currentPath = location.pathname
       setTimeout(() => {
@@ -41,7 +43,8 @@ export const initializePreview = ({
         //don't proceed if we don't have a pageID
         if (isNaN(pageID) || pageID < 1) {
           console.warn(
-            "*** Agility Preview Center *** - no pageID found on the `data-agility-page` element. \nMake sure you can an element is set up like this: data-agility-page='{{agilitypageid}}' ."
+            "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you can an element is set up like this: data-agility-page='{{agilitypageid}}' .",
+            "font-weight: bold"
           )
           return
         }
@@ -58,8 +61,9 @@ export const initializePreview = ({
           fullUrl = fullUrl.substring(0, fullUrl.indexOf("?"))
         }
         console.log(
-          "*** Agility Preview Center ***: SPA navigation event:",
-          fullUrl
+          "%cWeb Studio SDK:\n SPA navigation event:",
+          "font-weight:bold",
+          { fullUrl, pageID, contentID }
         )
         invokeFrameEvent("navigation", { url: fullUrl, pageID, contentID })
 
@@ -77,15 +81,20 @@ export const initializePreview = ({
 
     switch (messageType) {
       case "ready":
-        console.log("*** Agility Preview Center *** Initialized 👍")
+        console.log("%cWeb Studio SDK\n Initialized Event", "font-weight: bold")
 
         //init the css and preview panel
+        console.log(
+          "%cWeb Studio SDK\n initializing the css and Preview panel",
+          "font-weight: bold"
+        )
         initCSSAndPreviewPanel()
 
         //set the components
         initComponents()
 
         break
+
       case "content-change": {
         const contentItem = arg
         applyContentItem(contentItem)
@@ -94,7 +103,7 @@ export const initializePreview = ({
 
       case "refresh":
         console.log(
-          "*** Agility Preview Center *** Refreshing page...",
+          "'%cWeb Studio SDK\n %cRefresh Event', 'font-weight: bold', 'color: green'",
           location.href
         )
         setTimeout(() => {
@@ -104,7 +113,8 @@ export const initializePreview = ({
 
       default:
         console.log(
-          "*** Agility Preview Center *** Unknown message type on website:",
+          "%cWeb Studio SDK\n Unknown message type on website:",
+          "font-weight: bold",
           messageType,
           arg
         )
