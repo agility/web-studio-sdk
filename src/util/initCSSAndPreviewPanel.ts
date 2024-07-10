@@ -15,8 +15,8 @@ export const initCSSAndPreviewPanel = () => {
     const cssLink = document.createElement("link")
     const isDEV = process.env.NODE_ENV === "development"
     cssLink.href = isDEV
-      ? "http://127.0.0.1:8080/web-studio.css"
-      : "https://cdn.aglty.io/content-manager/css/web-studio.css"
+      ? process.env.DEV_CSS_URL || ""
+      : process.env.PROD_CSS_URL || ""
     cssLink.rel = "stylesheet"
     cssLink.type = "text/css"
     console.log("cssLink", cssLink)

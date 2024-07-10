@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { build } = require("esbuild")
 const { dependencies, peerDependencies } = require("./package.json")
 const { Generator } = require("npm-dts")
@@ -37,6 +38,8 @@ const buildTS = () =>
     platform: "node", // for CJS
     define: {
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+      "process.env.PROD_CSS_URL": JSON.stringify(process.env.PROD_CSS_URL),
+      "process.env.DEV_CSS_URL": JSON.stringify(process.env.DEV_CSS_URL),
     },
     outfile: "dist/index.js",
   })
