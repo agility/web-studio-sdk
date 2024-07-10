@@ -56,6 +56,24 @@ npm install @agility/web-studio-sdk
 yarn add @agility/web-studio-sdk
 ```
 
+## Running This Project Locally
+
+You will need to have an Agility CMS instance and a website that you can also run locally. In the root of your site, add the following script tag
+
+```html
+<script src="http://127.0.0.1:8080/index.js"></script>
+```
+
+1. Clone this repository
+
+2. Run `npm install`
+
+3. Run `npm run dev`
+
+4. On the Sitemaps page in Agility CMS, add a preview deployment that points at where your website is running locally, usually `http://localhost:3000`.
+
+5. Go to the Pages module in Agility CMS and click on the "Preview" button to see the Web Studio in action.
+
 ## Resources
 
 For docs & help around Agility CMS, please see [Agility CMS Documentation](https://help.agilitycms.com/hc/en-us)
