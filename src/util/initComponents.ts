@@ -1,7 +1,12 @@
-import { invokeFrameEvent } from "./invokeFrameEvent"
+import {
+  dispatchEditComponentEvent,
+  dispatchEditFieldEvent,
+} from "./frameEvents"
+
 /**
  * Initialize the components on the page
  */
+
 export const initComponents = () => {
   //find all the components on the page...
   const components = document.querySelectorAll("[data-agility-component]")
@@ -16,7 +21,8 @@ export const initComponents = () => {
       divCompEdit.setAttribute("type", "button")
       divCompEdit.setAttribute("title", "Edit")
       divCompEdit.addEventListener("click", () => {
-        invokeFrameEvent("edit-component", { contentID })
+        if (!contentID) return
+        dispatchEditComponentEvent({ contentID: parseInt(contentID) })
       })
       component.appendChild(divCompEdit)
 
@@ -38,7 +44,8 @@ export const initComponents = () => {
         divFieldEdit.setAttribute("type", "button")
         divFieldEdit.setAttribute("title", "Edit")
         divFieldEdit.addEventListener("click", () => {
-          invokeFrameEvent("edit-field", { fieldName, contentID })
+          if (!contentID || !fieldName) return
+          dispatchEditFieldEvent({ contentID: parseInt(contentID), fieldName })
         })
         field.appendChild(divFieldEdit)
 

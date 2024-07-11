@@ -5,6 +5,7 @@ import {
   getGuid,
   invokeFrameEvent,
 } from "./"
+import { dispatchNavigationEvent, dispatchReadyEvent } from "./frameEvents"
 
 interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
@@ -65,8 +66,7 @@ export const initializePreview = ({
           "font-weight:bold",
           { fullUrl, pageID, contentID }
         )
-        invokeFrameEvent("navigation", { url: fullUrl, pageID, contentID })
-
+        dispatchNavigationEvent({ url: fullUrl, pageID, contentID })
         //init the components that may have reloaded...
         initComponents()
       }, 1500)
@@ -122,6 +122,9 @@ export const initializePreview = ({
     }
   })
 
-  //send a message to the parent window to let it know we are ready
-  invokeFrameEvent("ready", null)
+  // if we have the width, height and url of our window, and we're ready send it to the parent
+  const windowWidth = window.innerWidth
+  const windowHeight = window.innerHeight
+  const url = location.href
+  dispatchReadyEvent({ windowWidth, windowHeight, url })
 }
