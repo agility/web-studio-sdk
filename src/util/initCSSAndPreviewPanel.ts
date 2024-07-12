@@ -11,7 +11,10 @@ export const initCSSAndPreviewPanel = () => {
   if (!document.body.classList.contains("agility-live-preview")) {
     document.body.classList.add("agility-live-preview")
     const cssLink = document.createElement("link")
-    cssLink.href = "https://cdn.aglty.io/content-manager/css/web-studio.css"
+    cssLink.href =
+      "https://unpkg.com/@agility/web-studio-sdk@latest/dist/web-studio.css"
+    // Development Mode - CSS Link
+    // cssLink.href = "http://127.0.0.1:8080/dist/web-studio.css"
     cssLink.rel = "stylesheet"
     cssLink.type = "text/css"
     document.head.appendChild(cssLink)
