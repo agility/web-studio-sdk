@@ -5,7 +5,13 @@ import {
   getGuid,
   invokeFrameEvent,
 } from "./"
-import { dispatchNavigationEvent, dispatchReadyEvent } from "./frameEvents"
+import {
+  dispatchNavigationEvent,
+  dispatchReadyEvent,
+  dispatchScrollEvent,
+  dispatchWindowResizeEvent,
+  IScrollEventArgs,
+} from "./frameEvents"
 
 interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
@@ -73,6 +79,44 @@ export const initializePreview = ({
     }
   }, 100)
 
+  //Add a listener for resize and scroll events on our window which will fire either the `sdk-window-resize` or `sdk-window-scroll` events to the parent window we will also need to debounce these events
+  let resizeTimeout: any
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(() => {
+      const args = {
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
+      }
+      console.log(
+        "%cWeb Studio SDK\n Window Resize Event",
+        "font-weight: bold",
+        args
+      )
+      dispatchWindowResizeEvent(args)
+    }, 250)
+  })
+
+  let scrollTimeout: any
+  window.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      const args: IScrollEventArgs = {
+        windowScrollableHeight: document.documentElement.scrollHeight,
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
+        scrollY: window.scrollY,
+        scrollX: window.scrollX,
+      }
+      dispatchScrollEvent(args)
+      console.log(
+        "%cWeb Studio SDK\n Window Scroll Event",
+        "font-weight: bold",
+        args
+      )
+    }, 250)
+  })
+
   window.addEventListener("message", ({ data }) => {
     const { source, messageType, guid, arg } = data
 
@@ -124,7 +168,10 @@ export const initializePreview = ({
 
   // if we have the width, height and url of our window, and we're ready send it to the parent
   const windowWidth = window.innerWidth
-  const windowHeight = window.innerHeight
-  const url = location.href
-  dispatchReadyEvent({ windowWidth, windowHeight, url })
+  const windowHeight = window.outerHeight
+  dispatchReadyEvent({
+    windowWidth,
+    windowHeight,
+    windowScrollableHeight: document.documentElement.scrollHeight,
+  })
 }

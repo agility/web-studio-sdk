@@ -1,35 +1,37 @@
 import { TFrameEvents, invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
 
-interface IReadyEventArgs {
+export interface IReadyEventArgs {
   //send along the current width, height, and url;
   windowWidth?: number
+  windowScrollableHeight?: number
   windowHeight?: number
   url?: string
 }
-interface INavigationEventArgs {
+export interface INavigationEventArgs {
   url: string
   pageID: number | null
   contentID: number | null
 }
-interface IEditComponentEventArgs {
+export interface IEditComponentEventArgs {
   contentID: number | null
 }
-interface IEditFieldEventArgs {
+export interface IEditFieldEventArgs {
   fieldName: string
   contentID: number | null
 }
-interface IScrollEventArgs {
-  x: number
-  y: number
+export interface IScrollEventArgs {
+  scrollX: number
+  scrollY: number
+  windowScrollableHeight: number
   windowWidth: number
   windowHeight: number
 }
-interface IWindowResizeEventArgs {
+export interface IWindowResizeEventArgs {
   windowWidth: number
   windowHeight: number
 }
-interface IRefreshEventArgs {
+export interface IRefreshEventArgs {
   url: string
 }
 // union type of all possible event arguments
@@ -72,12 +74,17 @@ export const dispatchEditFieldEvent = ({
 }
 
 export const dispatchScrollEvent = ({
-  x,
-  y,
+  scrollY,
+  scrollX,
   windowWidth,
   windowHeight,
 }: IScrollEventArgs) => {
-  invokeFrameEvent("sdk-scroll", { x, y, windowWidth, windowHeight })
+  invokeFrameEvent("sdk-scroll", {
+    scrollX,
+    scrollY,
+    windowWidth,
+    windowHeight,
+  })
 }
 
 export const dispatchWindowResizeEvent = ({
