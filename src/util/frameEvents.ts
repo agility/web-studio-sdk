@@ -12,6 +12,8 @@ export interface INavigationEventArgs {
   url: string
   pageID: number | null
   contentID: number | null
+  windowScrollableHeight?: number
+  windowHeight?: number
 }
 export interface IEditComponentEventArgs {
   contentID: number | null
@@ -49,8 +51,14 @@ export const dispatchReadyEvent = ({
   windowWidth,
   windowHeight,
   url,
+  windowScrollableHeight,
 }: IReadyEventArgs) =>
-  invokeFrameEvent("ready", { windowWidth, windowHeight, url })
+  invokeFrameEvent("ready", {
+    windowWidth,
+    windowHeight,
+    url,
+    windowScrollableHeight,
+  })
 
 export const dispatchNavigationEvent = ({
   url,

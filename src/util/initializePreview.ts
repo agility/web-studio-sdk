@@ -10,6 +10,7 @@ import {
   dispatchReadyEvent,
   dispatchScrollEvent,
   dispatchWindowResizeEvent,
+  INavigationEventArgs,
   IScrollEventArgs,
 } from "./frameEvents"
 
@@ -72,7 +73,14 @@ export const initializePreview = ({
           "font-weight:bold",
           { fullUrl, pageID, contentID }
         )
-        dispatchNavigationEvent({ url: fullUrl, pageID, contentID })
+        const args: INavigationEventArgs = {
+          url: fullUrl,
+          pageID,
+          contentID,
+          windowScrollableHeight: document.documentElement.scrollHeight,
+          windowHeight: window.innerHeight,
+        }
+        dispatchNavigationEvent(args)
         //init the components that may have reloaded...
         initComponents()
       }, 1500)
@@ -87,6 +95,7 @@ export const initializePreview = ({
       const args = {
         windowHeight: window.innerHeight,
         windowWidth: window.innerWidth,
+        windowScrollableHeight: document.documentElement.scrollHeight,
       }
       console.log(
         "%cWeb Studio SDK\n Window Resize Event",
