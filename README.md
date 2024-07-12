@@ -17,7 +17,7 @@ You'll need to have an Agility CMS instance to use this SDK. If you don't have o
 Once you have an Agility CMS Instance you will need to install the sdk from npm and add a script tag in your website.
 
 ```html
-<script src=""></script>
+<script src="https://unpkg.com/@agility/web-studio-sdk@latest/dist/index.js"></script>
 ```
 
 You can stop there if you'd like. But to get the most of the SDK, you'll need to decorate your components, fields, and pages with the data-agility-\* attributes. This will allow the SDK to interact with your website/app, and enable real-time editing. You'll also need to add your guid as a data-agility-guid attribute to the root element of your website/app.
