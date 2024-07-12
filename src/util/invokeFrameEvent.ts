@@ -1,6 +1,19 @@
+import { TFrameEventArgs } from "./frameEvents"
 import { getGuid } from "./getGuid"
 
-export const invokeFrameEvent = (messageType: string, arg: any) => {
+export type TFrameEvents =
+  | "ready"
+  | "navigation"
+  | "edit-component"
+  | "edit-field"
+  | "sdk-scroll"
+  | "sdk-window-resize"
+  | "sdk-refresh"
+
+export const invokeFrameEvent = (
+  messageType: TFrameEvents,
+  arg: TFrameEventArgs
+) => {
   const agilityGuid = getGuid(`invoke frame event`)
   //send a message to the parent window to let it know we are ready
   window.parent.postMessage(

@@ -5,6 +5,14 @@ import {
   getGuid,
   invokeFrameEvent,
 } from "./"
+import {
+  dispatchNavigationEvent,
+  dispatchReadyEvent,
+  dispatchScrollEvent,
+  dispatchWindowResizeEvent,
+  INavigationEventArgs,
+  IScrollEventArgs,
+} from "./frameEvents"
 
 interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
@@ -16,6 +24,7 @@ export const initializePreview = ({
   setIsInitialized(true)
 
   //ONLY proceed if we are in an iframe with a legit parent
+  // The parent window should be the PreviewIFrame
   if (!window.parent || !window.parent.postMessage) return
   if (window.self === window.top) return
 
@@ -24,6 +33,7 @@ export const initializePreview = ({
   let currentPath = location.pathname
   setInterval(() => {
     //see if the path has changed (popstate is not reliable here...)
+
     if (location.pathname !== currentPath) {
       currentPath = location.pathname
       setTimeout(() => {
@@ -41,7 +51,8 @@ export const initializePreview = ({
         //don't proceed if we don't have a pageID
         if (isNaN(pageID) || pageID < 1) {
           console.warn(
-            "*** Agility Preview Center *** - no pageID found on the `data-agility-page` element. \nMake sure you can an element is set up like this: data-agility-page='{{agilitypageid}}' ."
+            "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you can an element is set up like this: data-agility-page='{{agilitypageid}}' .",
+            "font-weight: bold"
           )
           return
         }
@@ -58,16 +69,62 @@ export const initializePreview = ({
           fullUrl = fullUrl.substring(0, fullUrl.indexOf("?"))
         }
         console.log(
-          "*** Agility Preview Center ***: SPA navigation event:",
-          fullUrl
+          "%cWeb Studio SDK:\n SPA navigation event:",
+          "font-weight:bold",
+          { fullUrl, pageID, contentID }
         )
-        invokeFrameEvent("navigation", { url: fullUrl, pageID, contentID })
-
+        const args: INavigationEventArgs = {
+          url: fullUrl,
+          pageID,
+          contentID,
+          windowScrollableHeight: document.documentElement.scrollHeight,
+          windowHeight: window.innerHeight,
+        }
+        dispatchNavigationEvent(args)
         //init the components that may have reloaded...
         initComponents()
       }, 1500)
     }
   }, 100)
+
+  //Add a listener for resize and scroll events on our window which will fire either the `sdk-window-resize` or `sdk-window-scroll` events to the parent window we will also need to debounce these events
+  let resizeTimeout: any
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(() => {
+      const args = {
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
+        windowScrollableHeight: document.documentElement.scrollHeight,
+      }
+      console.log(
+        "%cWeb Studio SDK\n Window Resize Event",
+        "font-weight: bold",
+        args
+      )
+      dispatchWindowResizeEvent(args)
+    }, 250)
+  })
+
+  let scrollTimeout: any
+  window.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = setTimeout(() => {
+      const args: IScrollEventArgs = {
+        windowScrollableHeight: document.documentElement.scrollHeight,
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
+        scrollY: window.scrollY,
+        scrollX: window.scrollX,
+      }
+      dispatchScrollEvent(args)
+      console.log(
+        "%cWeb Studio SDK\n Window Scroll Event",
+        "font-weight: bold",
+        args
+      )
+    }, 250)
+  })
 
   window.addEventListener("message", ({ data }) => {
     const { source, messageType, guid, arg } = data
@@ -77,15 +134,20 @@ export const initializePreview = ({
 
     switch (messageType) {
       case "ready":
-        console.log("*** Agility Preview Center *** Initialized 👍")
+        console.log("%cWeb Studio SDK\n Initialized Event", "font-weight: bold")
 
         //init the css and preview panel
+        console.log(
+          "%cWeb Studio SDK\n initializing the css and Preview panel",
+          "font-weight: bold"
+        )
         initCSSAndPreviewPanel()
 
         //set the components
         initComponents()
 
         break
+
       case "content-change": {
         const contentItem = arg
         applyContentItem(contentItem)
@@ -94,7 +156,7 @@ export const initializePreview = ({
 
       case "refresh":
         console.log(
-          "*** Agility Preview Center *** Refreshing page...",
+          "'%cWeb Studio SDK\n %cRefresh Event', 'font-weight: bold', 'color: green'",
           location.href
         )
         setTimeout(() => {
@@ -104,7 +166,8 @@ export const initializePreview = ({
 
       default:
         console.log(
-          "*** Agility Preview Center *** Unknown message type on website:",
+          "%cWeb Studio SDK\n Unknown message type on website:",
+          "font-weight: bold",
           messageType,
           arg
         )
@@ -112,6 +175,12 @@ export const initializePreview = ({
     }
   })
 
-  //send a message to the parent window to let it know we are ready
-  invokeFrameEvent("ready", null)
+  // if we have the width, height and url of our window, and we're ready send it to the parent
+  const windowWidth = window.innerWidth
+  const windowHeight = window.outerHeight
+  dispatchReadyEvent({
+    windowWidth,
+    windowHeight,
+    windowScrollableHeight: document.documentElement.scrollHeight,
+  })
 }

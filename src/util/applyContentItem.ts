@@ -57,7 +57,8 @@ export const applyContentItem = (contentItem: any) => {
         }
       } else {
         console.warn(
-          "*** Agility Preview Center *** Cannot apply field value of field",
+          "%cWeb Studio SDK\n Cannot apply field value of field",
+          "font-weight: bold",
           fieldName,
           "value: ",
           fieldValue

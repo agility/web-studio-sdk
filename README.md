@@ -74,6 +74,12 @@ You will need to have an Agility CMS instance and a website that you can also ru
 
 5. Go to the Pages module in Agility CMS and click on the "Preview" button to see the Web Studio in action.
 
+Also here is a handy Regex that's useful for debugging frame events in the chrome dev tools console:
+
+```regex
+/^Web Studio (SDK|CMS)/
+```
+
 ## Resources
 
 For docs & help around Agility CMS, please see [Agility CMS Documentation](https://help.agilitycms.com/hc/en-us)

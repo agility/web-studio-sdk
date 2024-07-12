@@ -3,12 +3,13 @@ export const getGuid = (file: string): string | null => {
 
   if (!guid) {
     console.error(
-      `*** Agility Preview Center *** - Error In:${file}  no guid found on body element. \nMake sure your body element is set up like this: <body data-agility-guid='{{agilityguid}}'>`
+      `%cWeb Studio SDK\n - Error In:${file}  no guid found on body element. \nMake sure your body element is set up like this: <body data-agility-guid='{{agilityguid}}'>`
     )
     return null
   }
   console.log(
-    "*** Agility Preview Center *** Initializing for instance guid:",
+    "%cWeb Studio SDK\n Initializing for instance guid:",
+    "font-weight:bold",
     guid
   )
   return guid
