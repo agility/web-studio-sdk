@@ -26,7 +26,7 @@ const buildCSS = () =>
     entryPoints: ["./src/web-studio.scss"],
     bundle: true,
     plugins: [sassPlugin({})],
-    minify: process.env.NODE_ENV === "production",
+    minify: true,
     sourcemap: true,
     outdir: "./dist",
   })
@@ -36,11 +36,6 @@ const buildTS = () =>
   build({
     ...sharedTSConfig,
     platform: "node", // for CJS
-    define: {
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-      "process.env.PROD_CSS_URL": JSON.stringify(process.env.PROD_CSS_URL),
-      "process.env.DEV_CSS_URL": JSON.stringify(process.env.DEV_CSS_URL),
-    },
     outfile: "dist/index.js",
   })
 
