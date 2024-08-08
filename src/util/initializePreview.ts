@@ -188,7 +188,6 @@ export const initializePreview = ({
   dispatchReadyEvent({
     windowWidth,
     windowHeight,
-    url: location.href,
     hasPageDecorators: !!hasPageDecorators,
     hasComponentDecorators: !!hasComponentDecorators,
     hasFieldDecorators: !!hasFieldDecorators,
