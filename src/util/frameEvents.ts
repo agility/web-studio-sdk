@@ -2,11 +2,14 @@ import { TFrameEvents, invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
 
 export interface IReadyEventArgs {
-  //send along the current width, height, and url;
+  //send along the current width, height, and url and status of decorators
   windowWidth?: number
   windowScrollableHeight?: number
   windowHeight?: number
   url?: string
+  hasPageDecorators?: boolean
+  hasComponentDecorators?: boolean
+  hasFieldDecorators?: boolean
 }
 export interface INavigationEventArgs {
   url: string
@@ -52,12 +55,18 @@ export const dispatchReadyEvent = ({
   windowHeight,
   url,
   windowScrollableHeight,
+  hasComponentDecorators,
+  hasFieldDecorators,
+  hasPageDecorators,
 }: IReadyEventArgs) =>
   invokeFrameEvent("ready", {
     windowWidth,
     windowHeight,
     url,
     windowScrollableHeight,
+    hasComponentDecorators,
+    hasFieldDecorators,
+    hasPageDecorators,
   })
 
 export const dispatchNavigationEvent = ({

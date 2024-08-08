@@ -178,9 +178,20 @@ export const initializePreview = ({
   // if we have the width, height and url of our window, and we're ready send it to the parent
   const windowWidth = window.innerWidth
   const windowHeight = window.outerHeight
+  // check if the document has loaded with any of the data-agility attributes
+  const hasPageDecorators = document.querySelector("[data-agility-page]")
+  const hasComponentDecorators = document.querySelector(
+    "[data-agility-component]"
+  )
+  const hasFieldDecorators = document.querySelector("[data-agility-field]")
+
   dispatchReadyEvent({
     windowWidth,
     windowHeight,
+    url: location.href,
+    hasPageDecorators: !!hasPageDecorators,
+    hasComponentDecorators: !!hasComponentDecorators,
+    hasFieldDecorators: !!hasFieldDecorators,
     windowScrollableHeight: document.documentElement.scrollHeight,
   })
 }
