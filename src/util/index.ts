@@ -4,7 +4,6 @@ import { applyContentItem } from "./applyContentItem"
 import { initializePreview } from "./initializePreview"
 import { invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
-import { generateCSS } from "./generateCSS"
 export {
   initCSSAndPreviewPanel,
   initComponents,
@@ -12,5 +11,4 @@ export {
   initializePreview,
   invokeFrameEvent,
   getGuid,
-  generateCSS,
 }
