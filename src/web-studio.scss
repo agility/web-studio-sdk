@@ -35,35 +35,30 @@ body.agility-live-preview {
   .agility-component {
     position: relative;
     transition: all 0.2s ease-in-out;
-    border: 2px dashed #9ca3af00;
+    border: 1px dashed #9ca3af;
 
-    &:hover {
-      border: 2px dashed #9ca3afff;
+    &:hover,
+    &:has(.agility-component-edit:focus) {
+      border: 1px solid #691ad8;
       .agility-component-edit {
         background: #9ca3afff;
         opacity: 1;
       }
+
       .agility-field {
-        border: 1px dotted #9ca3afaa;
+        border: 0.5px dashed #9ca3af;
       }
     }
 
     .agility-component-edit {
       transition: all 0.2s ease-in-out;
       position: absolute;
-      background: #9ca3afaa;
-      border-radius: 0 0 0 4px;
       color: white;
-      padding: 5px 10px;
       top: 0px;
       right: 0px;
-      height: 30px;
-      width: 40px;
       text-align: center;
       opacity: 0;
-      &:hover {
-        background: #691ad8;
-      }
+
       img {
         margin: 0;
       }
@@ -73,9 +68,11 @@ body.agility-live-preview {
       position: relative;
       transition: all 0.2s ease-in-out;
       border: 1px solid #691ad800;
-      &:hover {
+      &:hover,
+      &:has(.agility-field-edit:focus) {
         border: 1px solid #691ad8ff;
         .agility-field-edit {
+          background: #9ca3afff;
           opacity: 1;
         }
       }
@@ -83,21 +80,19 @@ body.agility-live-preview {
       .agility-field-edit {
         transition: all 0.2s ease-in-out;
         position: absolute;
-        background: #9ca3afaa;
-        border-radius: 0 0 0 4px;
+        // background: #9ca3afaa;
+        // border-radius: 0 0 0 4px;
         color: white;
-        padding: 5px 10px;
+        // padding: 5px 10px;
         top: 0px;
         right: 0px;
-        height: 30px;
-        width: 40px;
+        // height: 30px;
+        // width: 40px;
         text-align: center;
         opacity: 0;
-
-        &:hover {
-          background: #691ad8;
-        }
-
+        // &:hover {
+        //   background: #691ad8;
+        // }
         img {
           margin: 0;
         }

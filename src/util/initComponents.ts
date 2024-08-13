@@ -29,7 +29,7 @@ export const initComponents = () => {
       //edit svg
       const imgEdit = document.createElement("img")
       imgEdit.src =
-        "https://cdn.aglty.io/content-manager/images/icons/pencil.svg"
+        "https://cdn.aglty.io/content-manager/images/studio-edit.svg"
       imgEdit.alt = "Edit"
       divCompEdit.appendChild(imgEdit)
 
@@ -52,7 +52,7 @@ export const initComponents = () => {
         //edit svg
         const imgEditField = document.createElement("img")
         imgEditField.src =
-          "https://cdn.aglty.io/content-manager/images/icons/pencil.svg"
+          "https://cdn.aglty.io/content-manager/images/studio-edit.svg"
         imgEditField.alt = "Edit"
         divFieldEdit.appendChild(imgEditField)
       })
