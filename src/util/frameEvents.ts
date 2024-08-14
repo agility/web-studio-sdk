@@ -69,12 +69,8 @@ export const dispatchReadyEvent = ({
     hasPageDecorators,
   })
 
-export const dispatchNavigationEvent = ({
-  url,
-  pageID,
-  contentID,
-}: INavigationEventArgs) => {
-  invokeFrameEvent("navigation", { url, pageID, contentID })
+export const dispatchNavigationEvent = (args: INavigationEventArgs) => {
+  invokeFrameEvent("navigation", args)
 }
 
 export const dispatchEditComponentEvent = ({

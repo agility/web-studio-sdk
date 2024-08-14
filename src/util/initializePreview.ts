@@ -51,7 +51,7 @@ export const initializePreview = ({
         //don't proceed if we don't have a pageID
         if (isNaN(pageID) || pageID < 1) {
           console.warn(
-            "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you can an element is set up like this: data-agility-page='{{agilitypageid}}' .",
+            "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you have an element set up like this: data-agility-page='{{agilitypageid}}' .",
             "font-weight: bold"
           )
           return
@@ -61,6 +61,7 @@ export const initializePreview = ({
           contentID = agilityDynamicContentElem.getAttribute(
             "data-agility-dynamic-content"
           )
+          console.log("content id", contentID)
         }
 
         //TODO: send this event data to the parent window
@@ -80,6 +81,8 @@ export const initializePreview = ({
           windowScrollableHeight: document.documentElement.scrollHeight,
           windowHeight: window.innerHeight,
         }
+        // console.log("sdk args", args)
+        // console.dir(args)
         dispatchNavigationEvent(args)
         //init the components that may have reloaded...
         initComponents()
