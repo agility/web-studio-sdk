@@ -30,7 +30,8 @@ export const initializePreview = ({
 
   const agilityGuid = getGuid("initialize preview")
 
-  let currentPath = location.pathname
+  let currentPath = ""
+  // run this on the first load always
   setInterval(() => {
     //see if the path has changed (popstate is not reliable here...)
 
