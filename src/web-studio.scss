@@ -80,23 +80,21 @@ body.agility-live-preview {
       .agility-field-edit {
         transition: all 0.2s ease-in-out;
         position: absolute;
-        // background: #9ca3afaa;
-        // border-radius: 0 0 0 4px;
         color: white;
-        // padding: 5px 10px;
         top: 0px;
         right: 0px;
-        // height: 30px;
-        // width: 40px;
         text-align: center;
         opacity: 0;
-        // &:hover {
-        //   background: #691ad8;
-        // }
         img {
           margin: 0;
         }
       }
     }
+  }
+  .agility-component-commenting {
+    pointer-events: none !important;
+  }
+  .agility-field-commenting {
+    pointer-events: none !important;
   }
 }

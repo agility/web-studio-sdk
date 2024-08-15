@@ -4,6 +4,7 @@ import {
   applyContentItem,
   getGuid,
   invokeFrameEvent,
+  handleCollaborationToggle,
 } from "./"
 import {
   dispatchNavigationEvent,
@@ -34,7 +35,6 @@ export const initializePreview = ({
   // run this on the first load always
   setInterval(() => {
     //see if the path has changed (popstate is not reliable here...)
-
     if (location.pathname !== currentPath) {
       currentPath = location.pathname
       setTimeout(() => {
@@ -130,6 +130,7 @@ export const initializePreview = ({
     }, 250)
   })
 
+  // listen for messages from the parent window
   window.addEventListener("message", ({ data }) => {
     const { source, messageType, guid, arg } = data
 
@@ -137,6 +138,7 @@ export const initializePreview = ({
     if (source !== "agility-instance" || guid !== agilityGuid) return
 
     switch (messageType) {
+      // parent window received the ready event from the sdk
       case "ready":
         console.log("%cWeb Studio SDK\n Initialized Event", "font-weight: bold")
 
@@ -151,13 +153,13 @@ export const initializePreview = ({
         initComponents()
 
         break
-
+      //received the content-change event from the parent
       case "content-change": {
         const contentItem = arg
         applyContentItem(contentItem)
         break
       }
-
+      // recieved a refresh event from the parent
       case "refresh":
         console.log(
           "'%cWeb Studio SDK\n %cRefresh Event', 'font-weight: bold', 'color: green'",
@@ -167,7 +169,14 @@ export const initializePreview = ({
           location.replace(location.href)
         }, 1000)
         break
-
+      case "collaboration-mode-toggled":
+        console.log(
+          "%cWeb Studio SDK\n Collaboration Mode Toggled",
+          "font-weight: bold"
+        )
+        const isCollaborating = arg
+        handleCollaborationToggle(isCollaborating)
+        break
       default:
         console.log(
           "%cWeb Studio SDK\n Unknown message type on website:",

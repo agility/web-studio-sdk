@@ -4,6 +4,7 @@ import { applyContentItem } from "./applyContentItem"
 import { initializePreview } from "./initializePreview"
 import { invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
+import { handleCollaborationToggle } from "./handleCollaborationToggle"
 export {
   initCSSAndPreviewPanel,
   initComponents,
@@ -11,4 +12,5 @@ export {
   initializePreview,
   invokeFrameEvent,
   getGuid,
+  handleCollaborationToggle,
 }
