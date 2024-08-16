@@ -72,7 +72,7 @@ You will need to have an Agility CMS instance and a website that you can also ru
 
 4. On the Sitemaps page in Agility CMS, add a preview deployment that points at where your website is running locally, usually `http://localhost:3000`.
 
-5. Go to the Pages module in Agility CMS and click on the "Preview" button to see the Web Studio in action.
+5. Go to the Pages module in Agility CMS and click on the "Preview" button to see Web Studio in action.
 
 Also here is a handy Regex that's useful for debugging frame events in the chrome dev tools console:
 
