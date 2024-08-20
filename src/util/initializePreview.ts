@@ -62,7 +62,6 @@ export const initializePreview = ({
           contentID = agilityDynamicContentElem.getAttribute(
             "data-agility-dynamic-content"
           )
-          console.log("content id", contentID)
         }
 
         //TODO: send this event data to the parent window
