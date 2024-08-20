@@ -12,6 +12,7 @@ export const initComponents = () => {
   const components = document.querySelectorAll("[data-agility-component]")
   components.forEach((component) => {
     const contentID = component.getAttribute("data-agility-component")
+    const pageID = component.getAttribute("data-agility-page")
     if (!component.classList.contains("agility-component")) {
       component.classList.add("agility-component")
 
@@ -21,8 +22,11 @@ export const initComponents = () => {
       divCompEdit.setAttribute("type", "button")
       divCompEdit.setAttribute("title", "Edit")
       divCompEdit.addEventListener("click", () => {
-        if (!contentID) return
-        dispatchEditComponentEvent({ contentID: parseInt(contentID) })
+        if (!contentID || !pageID) return
+        dispatchEditComponentEvent({
+          contentID: parseInt(contentID),
+          pageID: parseInt(pageID),
+        })
       })
       component.appendChild(divCompEdit)
 
@@ -44,8 +48,12 @@ export const initComponents = () => {
         divFieldEdit.setAttribute("type", "button")
         divFieldEdit.setAttribute("title", "Edit")
         divFieldEdit.addEventListener("click", () => {
-          if (!contentID || !fieldName) return
-          dispatchEditFieldEvent({ contentID: parseInt(contentID), fieldName })
+          if (!contentID || !fieldName || !pageID) return
+          dispatchEditFieldEvent({
+            contentID: parseInt(contentID),
+            fieldName,
+            pageID: parseInt(pageID),
+          })
         })
         field.appendChild(divFieldEdit)
 

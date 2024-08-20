@@ -20,10 +20,12 @@ export interface INavigationEventArgs {
 }
 export interface IEditComponentEventArgs {
   contentID: number | null
+  pageID: number | null
 }
 export interface IEditFieldEventArgs {
   fieldName: string
   contentID: number | null
+  pageID: number | null
 }
 export interface IScrollEventArgs {
   scrollX: number
@@ -75,15 +77,17 @@ export const dispatchNavigationEvent = (args: INavigationEventArgs) => {
 
 export const dispatchEditComponentEvent = ({
   contentID,
+  pageID,
 }: IEditComponentEventArgs) => {
-  invokeFrameEvent("edit-component", { contentID })
+  invokeFrameEvent("edit-component", { contentID, pageID })
 }
 
 export const dispatchEditFieldEvent = ({
   fieldName,
   contentID,
+  pageID,
 }: IEditFieldEventArgs) => {
-  invokeFrameEvent("edit-field", { fieldName, contentID })
+  invokeFrameEvent("edit-field", { fieldName, contentID, pageID })
 }
 
 export const dispatchScrollEvent = ({
