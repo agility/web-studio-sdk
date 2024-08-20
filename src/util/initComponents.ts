@@ -22,10 +22,14 @@ export const initComponents = () => {
       divCompEdit.setAttribute("type", "button")
       divCompEdit.setAttribute("title", "Edit")
       divCompEdit.addEventListener("click", () => {
-        if (!contentID || !pageID) return
+        console.log("SDK dispatching edit component event", {
+          contentID,
+          pageID,
+        })
+        if (!contentID) return
         dispatchEditComponentEvent({
           contentID: parseInt(contentID),
-          pageID: parseInt(pageID),
+          pageID: pageID ? parseInt(pageID) : -1,
         })
       })
       component.appendChild(divCompEdit)
@@ -48,11 +52,16 @@ export const initComponents = () => {
         divFieldEdit.setAttribute("type", "button")
         divFieldEdit.setAttribute("title", "Edit")
         divFieldEdit.addEventListener("click", () => {
-          if (!contentID || !fieldName || !pageID) return
+          console.log("SDK dispatching edit field event", {
+            contentID,
+            fieldName,
+            pageID,
+          })
+          if (!contentID || !fieldName) return
           dispatchEditFieldEvent({
             contentID: parseInt(contentID),
             fieldName,
-            pageID: parseInt(pageID),
+            pageID: pageID ? parseInt(pageID) : -1,
           })
         })
         field.appendChild(divFieldEdit)

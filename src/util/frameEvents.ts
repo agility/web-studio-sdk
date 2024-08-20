@@ -87,6 +87,7 @@ export const dispatchEditFieldEvent = ({
   contentID,
   pageID,
 }: IEditFieldEventArgs) => {
+  console.log("dispatchEditFieldEvent", { fieldName, contentID, pageID })
   invokeFrameEvent("edit-field", { fieldName, contentID, pageID })
 }
 
