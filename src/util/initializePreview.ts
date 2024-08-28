@@ -18,6 +18,36 @@ interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
 }
 
+
+// throttle function to limit the number of times a function can be called
+const throttle = <T extends (...args: any[]) => void>(func: T, limit: number) => {
+  let lastFunc: ReturnType<typeof setTimeout> | undefined;
+  let lastRan: number | undefined;
+
+  return function(this: unknown, ...args: Parameters<T>) {
+    const context = this;
+    // if we haven't run the function yet, run it and set the lastRan time
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+
+    } else {
+      // if we have run the function, clear the lastFunc timeout and set a new one
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function() {
+        // if the time since the last ran is greater than the limit, run the function
+        if ((Date.now() - lastRan!) >= limit) {
+          func.apply(context, args);
+          // set the lastRan time to now
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  } as T;
+}
+
+
+
 export const initializePreview = ({
   setIsInitialized,
 }: initializePreviewArgs) => {
@@ -100,20 +130,18 @@ export const initializePreview = ({
     }, 250)
   })
 
-  let scrollTimeout: any
-  window.addEventListener("scroll", () => {
-    clearTimeout(scrollTimeout)
-    scrollTimeout = setTimeout(() => {
-      const args: IScrollEventArgs = {
-        windowScrollableHeight: document.documentElement.scrollHeight,
-        windowHeight: window.innerHeight,
-        windowWidth: window.innerWidth,
-        scrollY: window.scrollY,
-        scrollX: window.scrollX,
-      }
-      dispatchScrollEvent(args)
-    }, 250)
-  })
+  const throttledScrollHandler = throttle(() => {
+    const args: IScrollEventArgs = {
+      windowScrollableHeight: document.documentElement.scrollHeight,
+      windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
+      scrollY: window.scrollY,
+      scrollX: window.scrollX,
+    };
+    dispatchScrollEvent(args);
+  }, 10); 
+
+  window.addEventListener("scroll", throttledScrollHandler)
 
   window.addEventListener("message", ({ data }) => {
     const { source, messageType, guid, arg } = data
