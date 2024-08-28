@@ -69,11 +69,7 @@ export const initializePreview = ({
         if (fullUrl.indexOf("?") > -1) {
           fullUrl = fullUrl.substring(0, fullUrl.indexOf("?"))
         }
-        console.log(
-          "%cWeb Studio SDK:\n SPA navigation event:",
-          "font-weight:bold",
-          { fullUrl, pageID, contentID }
-        )
+
         const args: INavigationEventArgs = {
           url: fullUrl,
           pageID,
@@ -81,8 +77,7 @@ export const initializePreview = ({
           windowScrollableHeight: document.documentElement.scrollHeight,
           windowHeight: window.innerHeight,
         }
-        // console.log("sdk args", args)
-        // console.dir(args)
+
         dispatchNavigationEvent(args)
         //init the components that may have reloaded...
         initComponents()
@@ -100,11 +95,7 @@ export const initializePreview = ({
         windowWidth: window.innerWidth,
         windowScrollableHeight: document.documentElement.scrollHeight,
       }
-      console.log(
-        "%cWeb Studio SDK\n Window Resize Event",
-        "font-weight: bold",
-        args
-      )
+
       dispatchWindowResizeEvent(args)
     }, 250)
   })
@@ -121,11 +112,6 @@ export const initializePreview = ({
         scrollX: window.scrollX,
       }
       dispatchScrollEvent(args)
-      console.log(
-        "%cWeb Studio SDK\n Window Scroll Event",
-        "font-weight: bold",
-        args
-      )
     }, 250)
   })
 
@@ -137,15 +123,7 @@ export const initializePreview = ({
 
     switch (messageType) {
       case "ready":
-        console.log("%cWeb Studio SDK\n Initialized Event", "font-weight: bold")
-
-        //init the css and preview panel
-        console.log(
-          "%cWeb Studio SDK\n initializing the css and Preview panel",
-          "font-weight: bold"
-        )
         initCSSAndPreviewPanel()
-
         //set the components
         initComponents()
 
@@ -158,17 +136,13 @@ export const initializePreview = ({
       }
 
       case "refresh":
-        console.log(
-          "'%cWeb Studio SDK\n %cRefresh Event', 'font-weight: bold', 'color: green'",
-          location.href
-        )
         setTimeout(() => {
           location.replace(location.href)
         }, 1000)
         break
 
       default:
-        console.log(
+        console.warn(
           "%cWeb Studio SDK\n Unknown message type on website:",
           "font-weight: bold",
           messageType,

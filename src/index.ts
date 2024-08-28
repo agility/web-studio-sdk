@@ -12,7 +12,6 @@ const setIsInitialized = (state: boolean) => {
 }
 
 if (document.readyState !== "loading") {
-  console.log("Agility Preview Center - Document is ready")
   initializePreview({ setIsInitialized })
 } else {
   //wait for the page to load

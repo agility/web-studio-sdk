@@ -7,10 +7,6 @@ export const getGuid = (file: string): string | null => {
     )
     return null
   }
-  console.log(
-    "%cWeb Studio SDK\n Initializing for instance guid:",
-    "font-weight:bold",
-    guid
-  )
+
   return guid
 }

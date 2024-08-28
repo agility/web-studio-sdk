@@ -60,7 +60,11 @@ export const dispatchReadyEvent = ({
   hasComponentDecorators,
   hasFieldDecorators,
   hasPageDecorators,
-}: IReadyEventArgs) =>
+}: IReadyEventArgs) => {
+  console.info(
+    `%cWeb Studio SDK\n - Initialized Web-Studio: on ${url}`,
+    "font-weight: bold"
+  )
   invokeFrameEvent("ready", {
     windowWidth,
     windowHeight,
@@ -70,6 +74,7 @@ export const dispatchReadyEvent = ({
     hasFieldDecorators,
     hasPageDecorators,
   })
+}
 
 export const dispatchNavigationEvent = (args: INavigationEventArgs) => {
   invokeFrameEvent("navigation", args)
@@ -87,7 +92,6 @@ export const dispatchEditFieldEvent = ({
   contentID,
   pageID,
 }: IEditFieldEventArgs) => {
-  console.log("dispatchEditFieldEvent", { fieldName, contentID, pageID })
   invokeFrameEvent("edit-field", { fieldName, contentID, pageID })
 }
 
