@@ -1,6 +1,6 @@
 {
   "name": "@agility/web-studio-sdk",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Standard Development Kit used to enable Web Studio features in Agility CMS",
   "repository": {
     "type": "git",
@@ -30,7 +30,8 @@
   "author": "Agility CMS",
   "contributors": [
     "Dakotah Godfrey",
-    "Joel Varty"
+    "Joel Varty",
+    "Kevin Tran"
   ],
   "license": "MIT",
   "devDependencies": {
