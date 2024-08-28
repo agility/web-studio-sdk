@@ -42,7 +42,46 @@ You can stop there if you'd like. But to get the most of the SDK, you'll need to
 </html>
 ```
 
-### Installation
+## Decorating Your Code
+
+The SDK uses the `data-agility-\*` attributes to interact with your website/app. Here are the attributes you can use:
+
+- `data-agility-guid`: This is the guid of your website/app. You can find this in the settings of your website in Agility CMS. The SDK uses this to know which instance your website/app is associated with.
+  - Example:
+  ```html
+  <html lang="en" data-agility-guid="YOUR_GUID"></html>
+  ```
+- `data-agility-page`: This is the id of the page in Agility CMS. The SDK uses this to know which page is being interacted with, so we can track navigations and other page-specific events in Web Studio.
+  - Example:
+  ```html
+  <body>
+    <main data-agility-page="YOUR_PAGE_ID"></main>
+  </body>
+  ```
+- `data-agility-dynamic-content`: This is the content id of the dynamic content in Agility CMS. The SDK uses this to know which dynamic content is being interacted with, so we can track dynamic-content specific events in Web Studio, allowing us to keep navigation and other information in sync.
+  - Example:
+  ```html
+  <div data-agility-dynamic-content="YOUR_DYNAMIC_CONTENT_ID"></div>
+  ```
+- `data-agility-component`: This is the id of the component in Agility CMS. The SDK uses this to know which component is being interacted with, so we can track component-specific events in Web Studio and enable real-time editing.
+  - Example:
+  ```html
+  <header data-agility-component="YOUR_COMPONENT_ID"></header>
+  ```
+- `data-agility-field`: This is the name of the field in Agility CMS. The SDK uses this to know which field is being interacted with, so we can track field-specific events in Web Studio and enable real-time editing of their content.
+  - Example:
+  ```html
+  <h1 data-agility-field="title">{{fields.title}}</h1>
+  ```
+- `data-agility-html`: This is a boolean attribute that tells the SDK to treat the element as an HTML field. The SDK uses this to know that the field is an HTML field, so we can enable rich-text editing in Web Studio.
+  - Example:
+  ```html
+  <div data-agility-field="blog-content" data-agility-html>
+    {{fields.blog-content}}
+  </div>
+  ```
+
+## Installation
 
 **npm**
 
