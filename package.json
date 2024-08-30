@@ -31,7 +31,8 @@
   "author": "Agility CMS",
   "contributors": [
     "Dakotah Godfrey",
-    "Joel Varty"
+    "Joel Varty",
+    "Kevin Tran"
   ],
   "license": "MIT",
   "devDependencies": {
