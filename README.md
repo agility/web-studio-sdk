@@ -51,13 +51,29 @@ The SDK uses the `data-agility-\*` attributes to interact with your website/app.
   ```html
   <html lang="en" data-agility-guid="YOUR_GUID"></html>
   ```
-- `data-agility-page`: This is the id of the page in Agility CMS. The SDK uses this to know which page is being interacted with, so we can track navigations and other page-specific events in Web Studio.
+- `data-agility-previewbar`: This is a boolean attribute that tells the SDK this is the preview bar element, and allows us to hide it using tailwind class. The SDK uses this to know that element should be hidden.
+
   - Example:
+
+  ```html
+  <div
+    className="bg-agility relative px-8 text-gray-200"
+    data-agility-previewbar
+  >
+    // your preview bar content
+  </div>
+  ```
+
+- `data-agility-page`: This is the id of the page in Agility CMS. The SDK uses this to know which page is being interacted with, so we can track navigations and other page-specific events in Web Studio.
+
+  - Example:
+
   ```html
   <body>
     <main data-agility-page="YOUR_PAGE_ID"></main>
   </body>
   ```
+
 - `data-agility-dynamic-content`: This is the content id of the dynamic content in Agility CMS. The SDK uses this to know which dynamic content is being interacted with, so we can track dynamic-content specific events in Web Studio, allowing us to keep navigation and other information in sync.
   - Example:
   ```html
