@@ -19,6 +19,9 @@ export const applyContentItem = (contentItem: any) => {
       )
       const fieldValue = contentItem.values[fieldNameInContentItem || ""]
 
+      // get the agility field button
+      const fieldEditButton = field.querySelector(".agility-field-edit")
+
       //apply the field value to the field...
       if (typeof fieldValue === "string") {
         if (
@@ -37,14 +40,27 @@ export const applyContentItem = (contentItem: any) => {
             field.textContent = fieldValue
           }
         }
+        
+        if(!fieldEditButton){
+          console.warn('No edit button found for field', fieldName)
+          return;
+        }
+
+        // make sure to add the edit button back
+        field.appendChild(fieldEditButton)
+
       } else if (fieldValue.url) {
         //***  image field
+        const img = field.querySelector("img:not(.agility-field-edit img)") as HTMLImageElement
 
-        const img = field.querySelector("img")
-
-        if (img) {
-          //get rid of any source elements inside this if it's a picture tag
-          field.querySelectorAll("source").forEach((source) => source.remove())
+        if (img && img.src) {
+          // update the srcset for the picture source elements
+          field.querySelectorAll("source").forEach((source) => {
+            const oldSrc = source.srcset
+            const oldSrcParts = oldSrc.split("?")
+            const newSrc = fieldValue.url + "?" + oldSrcParts[1]
+            source.srcset = newSrc
+          })
 
           //try to match the current image src to the new one...
           const currentSrc = img.src
@@ -56,7 +72,7 @@ export const applyContentItem = (contentItem: any) => {
           img.src = newSrc
         }
       } else {
-        console.warn(
+        console.log(
           "%cWeb Studio SDK\n Cannot apply field value of field",
           "font-weight: bold",
           fieldName,
