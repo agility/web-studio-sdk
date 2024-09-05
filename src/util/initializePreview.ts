@@ -18,35 +18,34 @@ interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
 }
 
-
 // throttle function to limit the number of times a function can be called
-const throttle = <T extends (...args: any[]) => void>(func: T, limit: number) => {
-  let lastFunc: ReturnType<typeof setTimeout> | undefined;
-  let lastRan: number | undefined;
+const throttle = <T extends (...args: any[]) => void>(
+  func: T,
+  limit: number
+) => {
+  let lastFunc: ReturnType<typeof setTimeout> | undefined
+  let lastRan: number | undefined
 
-  return function(this: unknown, ...args: Parameters<T>) {
-    const context = this;
+  return function (this: unknown, ...args: Parameters<T>) {
+    const context = this
     // if we haven't run the function yet, run it and set the lastRan time
     if (!lastRan) {
-      func.apply(context, args);
-      lastRan = Date.now();
-
+      func.apply(context, args)
+      lastRan = Date.now()
     } else {
       // if we have run the function, clear the lastFunc timeout and set a new one
-      clearTimeout(lastFunc);
-      lastFunc = setTimeout(function() {
+      clearTimeout(lastFunc)
+      lastFunc = setTimeout(function () {
         // if the time since the last ran is greater than the limit, run the function
-        if ((Date.now() - lastRan!) >= limit) {
-          func.apply(context, args);
+        if (Date.now() - lastRan! >= limit) {
+          func.apply(context, args)
           // set the lastRan time to now
-          lastRan = Date.now();
+          lastRan = Date.now()
         }
-      }, limit - (Date.now() - lastRan));
+      }, limit - (Date.now() - lastRan))
     }
-  } as T;
+  } as T
 }
-
-
 
 export const initializePreview = ({
   setIsInitialized,
@@ -111,10 +110,9 @@ export const initializePreview = ({
         dispatchNavigationEvent(args)
         //init the components that may have reloaded...
         initComponents()
-      }, 1500)
+      }, 750)
     }
   }, 100)
-
   //Add a listener for resize and scroll events on our window which will fire either the `sdk-window-resize` or `sdk-window-scroll` events to the parent window we will also need to debounce these events
   let resizeTimeout: any
   window.addEventListener("resize", () => {
@@ -137,9 +135,9 @@ export const initializePreview = ({
       windowWidth: window.innerWidth,
       scrollY: window.scrollY,
       scrollX: window.scrollX,
-    };
-    dispatchScrollEvent(args);
-  }, 10); 
+    }
+    dispatchScrollEvent(args)
+  }, 10)
 
   window.addEventListener("scroll", throttledScrollHandler)
 
