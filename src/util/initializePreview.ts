@@ -59,7 +59,6 @@ export const initializePreview = ({
 
   const agilityGuid = getGuid("initialize preview")
 
-  // setInterval(() => {
   //   // Check if the path has changed (popstate is not reliable here...)
   //   if (location.pathname !== currentPath) {
   //     currentPath = location.pathname
@@ -179,7 +178,6 @@ export const initializePreview = ({
   window.addEventListener("load", () => {
     // wait a bit for the components to load and then call the initComponents method
     setTimeout(() => {
-      console.log("in window.onload first timeout, calling initComponents")
       initComponents()
     }, 800)
     // We need to add an observer to detect when the URL changes
@@ -192,9 +190,6 @@ export const initializePreview = ({
         // slightly debounce this event for cases where users are navigating quickly
         lastUrl = location.href
         setTimeout(() => {
-          console.log(
-            "in second timeout, location has changed calling onLocationChange"
-          )
           onLocationChange()
         }, 600)
       })
