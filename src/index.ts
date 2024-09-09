@@ -66,43 +66,18 @@ const onLocationChange = () => {
 }
 
 if (document.readyState !== "loading") {
-  console.log("document.readyState !== loading")
-  let lastLocation = location.href
   // add an observer to watch for location changes
-  const locationObserver = new MutationObserver(() => {
-    if (lastLocation !== location.href) {
-      lastLocation = location.href
-      console.log("lastLocation !== location.href calling ")
+  const observer = new MutationObserver((target, options) => {
       onLocationChange()
-    }
-  })
-  // start observing the body
-  locationObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-  })
-  // add an observer to monitor when the components have loaded in with the agility-data-* attributes and values
-  const componentsObserver = new MutationObserver(() => {
-    if (isInitialized) {
-      console.log("isInitialized , initComponents")
-      initComponents()
-    }
-  })
-  // start observing the body
-  componentsObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
   })
 
-  initializePreview({ setIsInitialized })
-} else {
-  //wait for the page to load
-  window.addEventListener("readystatechange", (ev: any) => {
-    if (
-      ev.target.readyState === "complete" ||
-      ev.target.readyState === "interactive"
-    ) {
-      initializePreview({ setIsInitialized })
-    }
+  // start observing the body
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["data-agility-page"]
   })
+  
+  initializePreview({ setIsInitialized })
 }
