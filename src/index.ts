@@ -76,7 +76,7 @@ if (document.readyState !== "loading") {
     childList: true,
     subtree: true,
     attributes: true,
-    attributeFilter: ["data-agility-page"]
+    attributeFilter: ["data-agility-page", "data-agility-dynamic-content", "data-agility-guid", "data-agility-field", "data-agility-component", "data-agility-html", "data-agility-previewbar"]
   })
   
   initializePreview({ setIsInitialized })
