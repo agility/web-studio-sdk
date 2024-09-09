@@ -61,10 +61,6 @@ export const dispatchReadyEvent = ({
   hasFieldDecorators,
   hasPageDecorators,
 }: IReadyEventArgs) => {
-  console.info(
-    `%cWeb Studio SDK\n - Initialized Web-Studio: on ${url}`,
-    "font-weight: bold"
-  )
   invokeFrameEvent("ready", {
     windowWidth,
     windowHeight,

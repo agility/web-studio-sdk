@@ -59,60 +59,6 @@ export const initializePreview = ({
 
   const agilityGuid = getGuid("initialize preview")
 
-  let currentPath = ""
-  // run this on the first load always
-  setInterval(() => {
-    //see if the path has changed (popstate is not reliable here...)
-
-    if (location.pathname !== currentPath) {
-      currentPath = location.pathname
-      setTimeout(() => {
-        const agilityPageIDElem = document.querySelector("[data-agility-page]")
-        const agilityDynamicContentElem = document.querySelector(
-          "[data-agility-dynamic-content]"
-        )
-        let pageID: any = -1
-        let contentID: any = -1
-        if (agilityPageIDElem) {
-          pageID = parseInt(
-            agilityPageIDElem.getAttribute("data-agility-page") || ""
-          )
-        }
-        //don't proceed if we don't have a pageID
-        if (isNaN(pageID) || pageID < 1) {
-          console.warn(
-            "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you have an element set up like this: data-agility-page='{{agilitypageid}}' .",
-            "font-weight: bold"
-          )
-          return
-        }
-
-        if (agilityDynamicContentElem) {
-          contentID = agilityDynamicContentElem.getAttribute(
-            "data-agility-dynamic-content"
-          )
-        }
-
-        //TODO: send this event data to the parent window
-        let fullUrl = location.href
-        if (fullUrl.indexOf("?") > -1) {
-          fullUrl = fullUrl.substring(0, fullUrl.indexOf("?"))
-        }
-
-        const args: INavigationEventArgs = {
-          url: fullUrl,
-          pageID,
-          contentID,
-          windowScrollableHeight: document.documentElement.scrollHeight,
-          windowHeight: window.innerHeight,
-        }
-
-        dispatchNavigationEvent(args)
-        //init the components that may have reloaded...
-        initComponents()
-      }, 750)
-    }
-  }, 100)
   //Add a listener for resize and scroll events on our window which will fire either the `sdk-window-resize` or `sdk-window-scroll` events to the parent window we will also need to debounce these events
   let resizeTimeout: any
   window.addEventListener("resize", () => {
