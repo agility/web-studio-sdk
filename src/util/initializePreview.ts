@@ -175,6 +175,7 @@ export const initializePreview = ({
     initComponents()
   }
   // Add a listener for the window.onload event
+  // TODO do the document.ready event instead of window.onload
   window.addEventListener("load", () => {
     // wait a bit for the components to load and then call the initComponents method
     setTimeout(() => {
@@ -188,6 +189,7 @@ export const initializePreview = ({
       const observer = new MutationObserver(() => {
         if (lastUrl === location.href) return
         // slightly debounce this event for cases where users are navigating quickly
+        //TO DO: Refactor to also check for changes on the data-agility-* attributes and call the onLocationChange method
         lastUrl = location.href
         setTimeout(() => {
           onLocationChange()
