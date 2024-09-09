@@ -68,7 +68,12 @@ const onLocationChange = () => {
 if (document.readyState !== "loading") {
   // add an observer to watch for location changes
   const observer = new MutationObserver((target, options) => {
-      onLocationChange()
+    if (isInitialized) {
+      //Debounce the location change; we don't want to send multiple navigation events;
+      setTimeout(() => {
+        onLocationChange()
+      }, 100)
+    }
   })
 
   // start observing the body
@@ -76,8 +81,16 @@ if (document.readyState !== "loading") {
     childList: true,
     subtree: true,
     attributes: true,
-    attributeFilter: ["data-agility-page", "data-agility-dynamic-content", "data-agility-guid", "data-agility-field", "data-agility-component", "data-agility-html", "data-agility-previewbar"]
+    attributeFilter: [
+      "data-agility-page",
+      "data-agility-dynamic-content",
+      "data-agility-guid",
+      "data-agility-field",
+      "data-agility-component",
+      "data-agility-html",
+      "data-agility-previewbar",
+    ],
   })
-  
+
   initializePreview({ setIsInitialized })
 }
