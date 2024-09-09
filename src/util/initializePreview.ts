@@ -59,73 +59,17 @@ export const initializePreview = ({
 
   const agilityGuid = getGuid("initialize preview")
 
-  //   // Check if the path has changed (popstate is not reliable here...)
-  //   if (location.pathname !== currentPath) {
-  //     currentPath = location.pathname
-  //     setTimeout(() => {
-  //       // Get the elements with data attributes for agility page and dynamic content
-  //       const agilityPageIDElem = document.querySelector("[data-agility-page]")
-  //       const agilityDynamicContentElem = document.querySelector(
-  //         "[data-agility-dynamic-content]"
-  //       )
-
-  //       // Initialize pageID and contentID
-  //       let pageID: any = -1
-  //       let contentID: any = -1
-
-  //       // If agilityPageIDElem exists, get the pageID from its data attribute
-  //       if (agilityPageIDElem) {
-  //         pageID = parseInt(
-  //           agilityPageIDElem.getAttribute("data-agility-page") || ""
-  //         )
-  //       }
-
-  //       // Don't proceed if we don't have a valid pageID
-  //       if (isNaN(pageID) || pageID < 1) {
-  //         console.warn(
-  //           "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you have an element set up like this: data-agility-page='{{agilitypageid}}' .",
-  //           "font-weight: bold"
-  //         )
-  //         return
-  //       }
-
-  //       // If agilityDynamicContentElem exists, get the contentID from its data attribute
-  //       if (agilityDynamicContentElem) {
-  //         contentID = agilityDynamicContentElem.getAttribute(
-  //           "data-agility-dynamic-content"
-  //         )
-  //       }
-
-  //       // Prepare the full URL without query parameters
-  //       let fullUrl = location.href
-  //       if (fullUrl.indexOf("?") > -1) {
-  //         fullUrl = fullUrl.substring(0, fullUrl.indexOf("?"))
-  //       }
-
-  //       // Create the navigation event arguments
-  //       const args: INavigationEventArgs = {
-  //         url: fullUrl,
-  //         pageID,
-  //         contentID,
-  //         windowScrollableHeight: document.documentElement.scrollHeight,
-  //         windowHeight: window.innerHeight,
-  //       }
-
-  //       // Dispatch the navigation event
-  //       dispatchNavigationEvent(args)
-
-  //       // Initialize the components that may have reloaded
-  //       initComponents()
-  //     }, 800) // Delay to ensure the elements are loaded
-  //   }
-  // }, 10) // Check every 100 milliseconds
-
   // Refactor the logic from the setInterval to a method we can add to the window.onLoad event
   // This will ensure we can run the logic on the first load of the page and on subsequent navigations
   const onLocationChange = () => {
     const agilityPageIDElem = document.querySelector("[data-agility-page]")
+    console.log("on Location change agilityPageIDElem", agilityPageIDElem)
     const agilityDynamicContentElem = document.querySelector(
       "[data-agility-dynamic-content]"
+    )
+    console.log(
+      "on Location change agilityDynamicContentElem",
+      agilityDynamicContentElem
     )
     //initialize pageID and contentID
     let pageID: any = -1
@@ -136,10 +80,12 @@ export const initializePreview = ({
       pageID = parseInt(
         agilityPageIDElem.getAttribute("data-agility-page") || ""
       )
+      console.log("onLocation change page id", pageID)
     }
 
     //don't proceed if we don't have a valid pageID
     if (isNaN(pageID) || pageID < 1) {
+      console.log("onLocation change page id", pageID)
       console.warn(
         "%cWeb Studio SDK\n - no pageID found on the `data-agility-page` element. \nMake sure you have an element set up like this: data-agility-page='{{agilitypageid}}' .",
         "font-weight: bold"
@@ -149,6 +95,10 @@ export const initializePreview = ({
 
     //if agilityDynamicContentElem exists, get the contentID from its data attribute
     if (agilityDynamicContentElem) {
+      console.log(
+        "onLocation change agilityDynamicContentElem",
+        agilityDynamicContentElem
+      )
       contentID = agilityDynamicContentElem.getAttribute(
         "data-agility-dynamic-content"
       )
@@ -168,7 +118,7 @@ export const initializePreview = ({
       windowScrollableHeight: document.documentElement.scrollHeight,
       windowHeight: window.innerHeight,
     }
-
+    console.log("dispatching navigation event", args)
     //dispatch the navigation event
     dispatchNavigationEvent(args)
     //initialize the components that may have reloaded
@@ -178,28 +128,34 @@ export const initializePreview = ({
   // TODO do the document.ready event instead of window.onload
   window.addEventListener("load", () => {
     // wait a bit for the components to load and then call the initComponents method
-    setTimeout(() => {
-      initComponents()
-    }, 800)
+    console.log("window.onload, loaded")
+
     // We need to add an observer to detect when the URL changes
     const observeUrlChange = () => {
       // keep track of the last URL
       let lastUrl = location.href
+      console.log("observeUrlChange", lastUrl)
       // create a new MutationObserver to observe for changes
       const observer = new MutationObserver(() => {
+        console.log("MutationObserver")
         if (lastUrl === location.href) return
+        console.log("lastUrl !== location.href", {
+          curr: location.href,
+          lastUrl,
+        })
         // slightly debounce this event for cases where users are navigating quickly
         //TO DO: Refactor to also check for changes on the data-agility-* attributes and call the onLocationChange method
+        console.log("setting lasturl")
         lastUrl = location.href
-        setTimeout(() => {
-          onLocationChange()
-        }, 600)
+
+        onLocationChange()
       })
       observer.observe(document.body, {
         childList: true,
         subtree: true,
       })
     }
+    console.log("adding observeUrlChange")
     // call the function to initialize the observer
     observeUrlChange()
   })

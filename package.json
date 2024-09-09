@@ -16,7 +16,7 @@
     "node": ">= 18.0.0"
   },
   "scripts": {
-    "build": "NODE_ENV=production  node build.js",
+    "build": "NODE_ENV=production rm -rf dist && node build.js",
     "dev": "NODE_ENV=development npx http-server ./dist -c-1 -p 8080",
     "esbuildServe": "NODE_ENV=development esbuild src/index.ts --bundle --outdir=dist --servedir=dist --watch",
     "pre-publish": "rm -rf dist && yarn build"
