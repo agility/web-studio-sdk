@@ -13,6 +13,12 @@ let isInitialized = false
 
 const setIsInitialized = (state: boolean) => {
   isInitialized = state
+  startObserver()
+}
+let isDocumentReady = false
+const setDocumentReady = (state: boolean) => {
+  isDocumentReady = state
+  startObserver()
 }
 const onLocationChange = () => {
   const agilityPageIDElem = document.querySelector("[data-agility-page]")
@@ -65,8 +71,8 @@ const onLocationChange = () => {
   initComponents()
 }
 
-if (document.readyState !== "loading") {
-  // add an observer to watch for location changes
+const startObserver = () => {
+  if (!isDocumentReady || !isInitialized) return
   const observer = new MutationObserver((target, options) => {
     if (isInitialized) {
       //Debounce the location change; we don't want to send multiple navigation events;
@@ -75,7 +81,6 @@ if (document.readyState !== "loading") {
       }, 100)
     }
   })
-
   // start observing the body
   observer.observe(document.body, {
     childList: true,
@@ -91,6 +96,15 @@ if (document.readyState !== "loading") {
       "data-agility-previewbar",
     ],
   })
-
-  initializePreview({ setIsInitialized })
 }
+
+document.onreadystatechange = () => {
+  if (
+    document.readyState === "interactive" ||
+    document.readyState === "complete"
+  ) {
+    setDocumentReady(true)
+  }
+}
+// Needs to always happen
+initializePreview({ setIsInitialized })

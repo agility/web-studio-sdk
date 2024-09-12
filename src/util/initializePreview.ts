@@ -50,12 +50,12 @@ const throttle = <T extends (...args: any[]) => void>(
 export const initializePreview = ({
   setIsInitialized,
 }: initializePreviewArgs) => {
-  setIsInitialized(true)
-
   //ONLY proceed if we are in an iframe with a legit parent
   // The parent window should be the PreviewIFrame
   if (!window.parent || !window.parent.postMessage) return
   if (window.self === window.top) return
+
+  setIsInitialized(true)
 
   const agilityGuid = getGuid("initialize preview")
 
