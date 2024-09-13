@@ -98,21 +98,28 @@ const startObserver = () => {
   })
 }
 
-// document.onreadystatechange = () => {
-//  console.log("document.readyState changed", document.readyState)
-//   if (
-//     document.readyState === "interactive" ||
-//     document.readyState === "complete"
-//   ) {
-//     setDocumentReady(true)
-//   }
-// }
-// We need to read this state directly because the document.onreadystatechange event may have already fired
+// Check immediately if the document is already in an interactive or complete state
+// This ensures that if the script runs after the document is already loaded,
+// we don't miss the opportunity to initialize the app.
 if (
   document.readyState === "complete" ||
   document.readyState === "interactive"
 ) {
   setDocumentReady(true)
+}
+
+// Add a listener for changes in the document's ready state.
+// This is necessary to handle cases where the document hasn't yet reached the
+// interactive or complete state when the script is first executed.
+document.onreadystatechange = () => {
+  // If the document's readyState becomes 'interactive' or 'complete',
+  // it means the DOM is ready, so we can safely initialize our observer.
+  if (
+    document.readyState === "interactive" ||
+    document.readyState === "complete"
+  ) {
+    setDocumentReady(true)
+  }
 }
 // Needs to always happen
 initializePreview({ setIsInitialized })
