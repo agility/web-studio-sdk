@@ -1,5 +1,4 @@
 import {
-  dispatchConsoleLogEvent,
   dispatchEditComponentEvent,
   dispatchEditFieldEvent,
 } from "./frameEvents"
@@ -9,12 +8,10 @@ import {
  */
 
 export const initComponents = () => {
-  
   //find all the pages
   const pages = document.querySelectorAll("[data-agility-page]")
 
   pages.forEach((page) => {
-
     // get all the components within the page
     const components = page.querySelectorAll("[data-agility-component]")
     const pageID = page.getAttribute("data-agility-page")
@@ -29,8 +26,11 @@ export const initComponents = () => {
         divCompEdit.classList.add("agility-component-edit")
         divCompEdit.setAttribute("type", "button")
         divCompEdit.setAttribute("title", "Edit")
-        divCompEdit.addEventListener("click", () => {
+        divCompEdit.addEventListener("click", (e) => {
           if (!contentID) return
+          // prevent the click from bubbling up to the component itself - important for when the component is a link or button.
+          e.preventDefault()
+          e.stopPropagation()
           dispatchEditComponentEvent({
             contentID: parseInt(contentID),
             pageID: pageID ? parseInt(pageID) : -1,
@@ -55,9 +55,11 @@ export const initComponents = () => {
           divFieldEdit.classList.add("agility-field-edit")
           divFieldEdit.setAttribute("type", "button")
           divFieldEdit.setAttribute("title", "Edit")
-          divFieldEdit.addEventListener("click", () => {
+          divFieldEdit.addEventListener("click", (e) => {
             if (!contentID || !fieldName) return
-            
+            // prevent the click from bubbling up to the component itself - important for when the component is a link or button.
+            e.preventDefault()
+            e.stopPropagation()
             dispatchEditFieldEvent({
               contentID: parseInt(contentID),
               fieldName,
