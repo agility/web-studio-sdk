@@ -98,13 +98,21 @@ const startObserver = () => {
   })
 }
 
-document.onreadystatechange = () => {
-  if (
-    document.readyState === "interactive" ||
-    document.readyState === "complete"
-  ) {
-    setDocumentReady(true)
-  }
+// document.onreadystatechange = () => {
+//  console.log("document.readyState changed", document.readyState)
+//   if (
+//     document.readyState === "interactive" ||
+//     document.readyState === "complete"
+//   ) {
+//     setDocumentReady(true)
+//   }
+// }
+// We need to read this state directly because the document.onreadystatechange event may have already fired
+if (
+  document.readyState === "complete" ||
+  document.readyState === "interactive"
+) {
+  setDocumentReady(true)
 }
 // Needs to always happen
 initializePreview({ setIsInitialized })
