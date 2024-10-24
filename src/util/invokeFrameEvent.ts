@@ -10,6 +10,7 @@ export type TFrameEvents =
   | "sdk-window-resize"
   | "sdk-refresh"
   | "comment-relocate"
+  | "comment-dictionary-updated"
 
 export const invokeFrameEvent = (
   messageType: TFrameEvents,

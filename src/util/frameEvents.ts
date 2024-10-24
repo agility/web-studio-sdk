@@ -1,5 +1,7 @@
 import { TFrameEvents, invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
+import { off } from "process"
+import { IUpdatedCommentDictionary } from "./initializePreview"
 
 export interface IReadyEventArgs {
   //send along the current width, height, and url and status of decorators
@@ -34,6 +36,9 @@ export interface IScrollEventArgs {
   windowWidth: number
   windowHeight: number
 }
+export interface ICommentDictionaryUpdatedEventArgs {
+  updatedCommentDictionary: IUpdatedCommentDictionary
+}
 export interface IWindowResizeEventArgs {
   windowWidth: number
   windowHeight: number
@@ -44,6 +49,9 @@ export interface IRefreshEventArgs {
 
 export interface IAddCommentLocationEventArgs {
   fullCommentMetadata: any
+  offsetX: number
+  offsetY: number
+  uniqueSelector: string
   threadID: string
 }
 
@@ -57,6 +65,7 @@ export type TFrameEventArgs =
   | IWindowResizeEventArgs
   | IRefreshEventArgs
   | IAddCommentLocationEventArgs
+  | ICommentDictionaryUpdatedEventArgs
   | null
 
 export const dispatchReadyEvent = ({
@@ -122,11 +131,24 @@ export const dispatchWindowResizeEvent = ({
 export const dispatchAddCommentLocationEvent = ({
   fullCommentMetadata,
   threadID,
+  offsetX,
+  offsetY,
+  uniqueSelector,
 }: IAddCommentLocationEventArgs) => {
   console.info("dispatchAddCommentLocationEvent", fullCommentMetadata)
-  invokeFrameEvent("comment-relocate", { threadID, fullCommentMetadata })
+  invokeFrameEvent("comment-relocate", {
+    threadID,
+    fullCommentMetadata,
+    offsetX,
+    offsetY,
+    uniqueSelector,
+  })
 }
-
+export const dispatchCommentDictionaryUpdatedEvent = ({
+  updatedCommentDictionary,
+}: ICommentDictionaryUpdatedEventArgs) => {
+  invokeFrameEvent("comment-dictionary-updated", { updatedCommentDictionary })
+}
 export const dispatchRefreshEvent = ({ url }: IRefreshEventArgs) => {
   invokeFrameEvent("sdk-refresh", { url })
 }

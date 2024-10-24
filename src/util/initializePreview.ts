@@ -11,6 +11,7 @@ import {
 } from "./commentUtils"
 import {
   dispatchAddCommentLocationEvent,
+  dispatchCommentDictionaryUpdatedEvent,
   dispatchNavigationEvent,
   dispatchReadyEvent,
   dispatchScrollEvent,
@@ -22,7 +23,37 @@ import {
 interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void
 }
-
+interface ICommentDictionary {
+  [threadID: string]: {
+    guid: string
+    layoutID: number
+    location: string
+    originX: number
+    originY: number
+    subMetadata: string
+    title: string
+    tx: number
+    ty: number
+    visual: Boolean
+  }
+}
+export interface IUpdatedCommentDictionary {
+  [threadID: string]: {
+    guid: string
+    layoutID: number
+    location: string
+    originX: number
+    originY: number
+    subMetadata: string
+    title: string
+    tx: number
+    ty: number
+    visual: Boolean
+    uniqueSelector?: string
+    offsetX?: number
+    offsetY?: number
+  }
+}
 // throttle function to limit the number of times a function can be called
 const throttle = <T extends (...args: any[]) => void>(
   func: T,
@@ -94,7 +125,6 @@ export const initializePreview = ({
 
   window.addEventListener("message", ({ data }) => {
     const { source, messageType, guid, arg } = data
-    console.log("amihere", data)
     //filter out the messages
     if (source !== "agility-instance" || guid !== agilityGuid) return
 
@@ -118,17 +148,54 @@ export const initializePreview = ({
           if (deepestEle) {
             //deepestEle.setAttribute('data-ag-thread-id', k)
             const uniqueSelector = getUniqueSelector(deepestEle)
-            console.log("uniqueSelector", uniqueSelector)
+            // get the x and y offsets for the elemnt and send them to the parent
+            const rect = deepestEle.getBoundingClientRect()
+            // subtract the left and top of the rectangle from the x and y coordinates to get the offset values
+            const offsetX = x - rect.left
+            const offsetY = y - rect.top
             arg.uniqueSelector = uniqueSelector
             dispatchAddCommentLocationEvent({
               threadID,
+              offsetX,
+              offsetY,
               fullCommentMetadata: arg,
+              uniqueSelector,
             })
           }
         } else {
           console.log("No element found at the specified coordinates.")
         }
-
+      case "update-comment-dictionary": {
+        const { commentDictionary } = arg
+        // we've received the comment dictionary from the parent, it will be formatted as an ICommmentDictionary. We need to then map over each entry and go through the same process as the comment-create message event and then return an updated dictionary of type IUpdatedCommentDictionary to the parent with the uniqueSelector, offsetX and offsetY added to each entry
+        const updatedCommentDictionary: IUpdatedCommentDictionary = {}
+        for (const [key, value] of Object.entries(
+          commentDictionary as ICommentDictionary
+        )) {
+          const { originX, originY } = value
+          const x = originX
+          const y = originY
+          const element = document.elementFromPoint(x, y)
+          if (element) {
+            const deepestEle = getDeepestElementAtCoordinates(element, x, y)
+            if (deepestEle) {
+              const uniqueSelector = getUniqueSelector(deepestEle)
+              const rect = deepestEle.getBoundingClientRect()
+              const offsetX = x - rect.left
+              const offsetY = y - rect.top
+              updatedCommentDictionary[key] = {
+                ...value,
+                uniqueSelector,
+                offsetX,
+                offsetY,
+              }
+            }
+          }
+        }
+        console.log("commentDictionary", commentDictionary)
+        // send the updated dictionary back to the parent
+        dispatchCommentDictionaryUpdatedEvent({ updatedCommentDictionary })
+      }
       case "content-change": {
         const contentItem = arg
         applyContentItem(contentItem)

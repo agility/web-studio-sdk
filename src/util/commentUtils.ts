@@ -62,16 +62,6 @@ export function getDeepestElementAtCoordinates(
  * @param {Element} element - The DOM element for which to generate the selector.
  * @returns {string} - A unique CSS selector that can be used to select the element.
  *
- * @example
- * // Assuming 'element' is a DOM element with classes containing special characters
- * const element = document.querySelector('.md\\:justify-start');
- * const selector = getUniqueSelector(element);
- * console.log(selector);
- * // Output:
- * // 'body.agility-live-preview > div#site-wrapper > div#site > div.flex.flex-col.min-h-screen > header.relative.w-full.mx-auto.bg-white.px-8 > div.max-w-screen-xl.mx-auto > div.flex.justify-between.items-center.py-6.md\:justify-start.md\:space-x-10.w-full'
- *
- * // You can use the selector to select the element
- * const selectedElement = document.querySelector(selector);
  */
 export function getUniqueSelector(element: Element) {
   /**
