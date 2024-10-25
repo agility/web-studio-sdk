@@ -49,8 +49,8 @@ export interface IRefreshEventArgs {
 
 export interface IAddCommentLocationEventArgs {
   fullCommentMetadata: any
-  offsetX: number
-  offsetY: number
+  percentageOffsetX?: number
+  percentageOffsetY?: number
   uniqueSelector: string
   threadID: string
 }
@@ -131,16 +131,16 @@ export const dispatchWindowResizeEvent = ({
 export const dispatchAddCommentLocationEvent = ({
   fullCommentMetadata,
   threadID,
-  offsetX,
-  offsetY,
+  percentageOffsetX,
+  percentageOffsetY,
   uniqueSelector,
 }: IAddCommentLocationEventArgs) => {
   console.info("dispatchAddCommentLocationEvent", fullCommentMetadata)
   invokeFrameEvent("comment-relocate", {
     threadID,
     fullCommentMetadata,
-    offsetX,
-    offsetY,
+    percentageOffsetX,
+    percentageOffsetY,
     uniqueSelector,
   })
 }

@@ -114,3 +114,40 @@ export function getUniqueSelector(element: Element) {
   // Join all parts with ' > ' to form the full selector path
   return path.join(" > ")
 }
+
+export function getRelativePercentage(deepestEle: Element, x: number, y: number) {
+  if (!deepestEle) return null;
+
+  const rect = deepestEle.getBoundingClientRect();
+
+  // Calculate relative position inside the element
+  const relativeX = x - rect.left;
+  const relativeY = y - rect.top;
+
+  // Calculate percentage relative to element's size
+  const percentageX = (relativeX / rect.width) * 100;
+  const percentageY = (relativeY / rect.height) * 100;
+
+  return {
+    percentageX: Math.max(0, Math.min(100, percentageX)), // Ensure value is between 0 and 100
+    percentageY: Math.max(0, Math.min(100, percentageY))  // Ensure value is between 0 and 100
+  };
+}
+
+export function getAbsolutePositionFromPercentage(deepestEle: Element, percentageX: number | undefined, percentageY: number | undefined) {
+  if (!deepestEle || !percentageY || !percentageX) return null;
+
+  const rect = deepestEle.getBoundingClientRect();
+
+  // Use scrollLeft and scrollTop for the document-wide scroll offset
+  const scrollX = document.documentElement.scrollLeft;
+  const scrollY = document.documentElement.scrollTop;
+
+  // Calculate the position inside the element based on the given percentages
+  const x = rect.left + (percentageX / 100) * rect.width + scrollX;
+  const y = rect.top + (percentageY / 100) * rect.height + scrollY;
+
+  return { x, y };
+}
+
+
