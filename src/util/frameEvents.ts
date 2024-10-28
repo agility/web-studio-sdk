@@ -136,7 +136,7 @@ export const dispatchAddCommentLocationEvent = ({
   uniqueSelector,
 }: IAddCommentLocationEventArgs) => {
   console.info("dispatchAddCommentLocationEvent", fullCommentMetadata)
-  invokeFrameEvent("comment-relocate", {
+  invokeFrameEvent("add-comment-metadata", {
     threadID,
     fullCommentMetadata,
     percentageOffsetX,

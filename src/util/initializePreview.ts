@@ -210,7 +210,6 @@ export const initializePreview = ({
             }
           }
         }
-        console.log("commentDictionary", commentDictionary);
         // send the updated dictionary back to the parent
         dispatchCommentDictionaryUpdatedEvent({ updatedCommentDictionary });
       }

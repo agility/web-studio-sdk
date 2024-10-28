@@ -9,7 +9,7 @@ export type TFrameEvents =
   | "sdk-scroll"
   | "sdk-window-resize"
   | "sdk-refresh"
-  | "comment-relocate"
+  | "add-comment-metadata"
   | "comment-dictionary-updated"
 
 export const invokeFrameEvent = (
