@@ -3,7 +3,6 @@ import {
   initComponents,
   applyContentItem,
   getGuid,
-  invokeFrameEvent,
 } from "./";
 import {
   getAbsolutePositionFromPercentage,
@@ -12,33 +11,16 @@ import {
   getUniqueSelector,
 } from "./commentUtils";
 import {
-  dispatchAddCommentLocationEvent,
+  dispatchSetCommentCoordsEvent,
   dispatchCommentDictionaryUpdatedEvent,
-  dispatchNavigationEvent,
   dispatchReadyEvent,
   dispatchScrollEvent,
   dispatchWindowResizeEvent,
-  INavigationEventArgs,
   IScrollEventArgs,
 } from "./frameEvents";
 
 interface initializePreviewArgs {
   setIsInitialized: (state: boolean) => void;
-}
-interface ICommentDictionary {
-  [threadID: string]: {
-    guid: string;
-    uniqueSelector: string;
-    layoutID: number;
-    location: string;
-    originX: number;
-    originY: number;
-    subMetadata: string;
-    title: string;
-    tx: number;
-    ty: number;
-    visual: Boolean;
-  };
 }
 export interface IUpdatedCommentDictionary {
   [threadID: string]: {
@@ -134,10 +116,9 @@ export const initializePreview = ({
 
         break;
 
-      case "comment-create":
-        const { originX, originY, threadID } = arg;
+      case "get-comment-coords":
+        const { originX, originY } = arg;
         const element = document.elementFromPoint(originX, originY);
-
         if (element) {
           const deepestEle = getDeepestElementAtCoordinates(
             element,
@@ -153,9 +134,7 @@ export const initializePreview = ({
               originY,
             );
             arg.uniqueSelector = uniqueSelector;
-            dispatchAddCommentLocationEvent({
-              threadID,
-              fullCommentMetadata: arg,
+            dispatchSetCommentCoordsEvent({
               uniqueSelector,
               percentageOffsetX: percentageCoords?.percentageX,
               percentageOffsetY: percentageCoords?.percentageY,
@@ -178,13 +157,7 @@ export const initializePreview = ({
           const { percentageOffsetX, percentageOffsetY, uniqueSelector } =
             value;
 
-          updatedCommentDictionary[key] = {
-            percentageOffsetY: percentageOffsetY,
-            percentageOffsetX: percentageOffsetX,
-            uniqueSelector: uniqueSelector,
-            x: undefined,
-            y: undefined,
-          };
+          updatedCommentDictionary[key] = value;
 
           if (!uniqueSelector) {
             console.warn(
@@ -210,7 +183,7 @@ export const initializePreview = ({
             }
           }
         }
-        // send the updated dictionary back to the parent
+        ///*   */send the updated dictionary back to the parent
         dispatchCommentDictionaryUpdatedEvent({ updatedCommentDictionary });
       }
       case "content-change": {

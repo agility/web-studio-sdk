@@ -47,12 +47,10 @@ export interface IRefreshEventArgs {
   url: string
 }
 
-export interface IAddCommentLocationEventArgs {
-  fullCommentMetadata: any
+export interface ISetCommentCoordsEventArgs {
   percentageOffsetX?: number
   percentageOffsetY?: number
   uniqueSelector: string
-  threadID: string
 }
 
 // union type of all possible event arguments
@@ -64,7 +62,7 @@ export type TFrameEventArgs =
   | IScrollEventArgs
   | IWindowResizeEventArgs
   | IRefreshEventArgs
-  | IAddCommentLocationEventArgs
+  | ISetCommentCoordsEventArgs
   | ICommentDictionaryUpdatedEventArgs
   | null
 
@@ -128,17 +126,12 @@ export const dispatchWindowResizeEvent = ({
   invokeFrameEvent("sdk-window-resize", { windowWidth, windowHeight })
 }
 
-export const dispatchAddCommentLocationEvent = ({
-  fullCommentMetadata,
-  threadID,
+export const dispatchSetCommentCoordsEvent = ({
   percentageOffsetX,
   percentageOffsetY,
   uniqueSelector,
-}: IAddCommentLocationEventArgs) => {
-  console.info("dispatchAddCommentLocationEvent", fullCommentMetadata)
-  invokeFrameEvent("add-comment-metadata", {
-    threadID,
-    fullCommentMetadata,
+}: ISetCommentCoordsEventArgs) => {
+  invokeFrameEvent("set-comment-coords", {
     percentageOffsetX,
     percentageOffsetY,
     uniqueSelector,
