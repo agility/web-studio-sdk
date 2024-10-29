@@ -8,6 +8,7 @@ import {
   getAbsolutePositionFromPercentage,
   getDeepestElementAtCoordinates,
   getRelativePercentage,
+  getSelectorIndex,
   getUniqueSelector,
 } from "./commentUtils";
 import {
@@ -29,6 +30,7 @@ export interface IUpdatedCommentDictionary {
     percentageOffsetY?: number;
     x?: number;
     y?: number;
+    elementIndex?: number;
   };
 }
 // throttle function to limit the number of times a function can be called
@@ -128,6 +130,7 @@ export const initializePreview = ({
 
           if (deepestEle) {
             const uniqueSelector = getUniqueSelector(deepestEle);
+            const eleIndex = getSelectorIndex(uniqueSelector, originX, originY);
             const percentageCoords = getRelativePercentage(
               deepestEle,
               originX,
@@ -138,6 +141,7 @@ export const initializePreview = ({
               uniqueSelector,
               percentageOffsetX: percentageCoords?.percentageX,
               percentageOffsetY: percentageCoords?.percentageY,
+              elementIndex: eleIndex,
             });
           }
         } else {
@@ -154,8 +158,12 @@ export const initializePreview = ({
         for (const [key, value] of Object.entries(
           commentDictionary as IUpdatedCommentDictionary,
         )) {
-          const { percentageOffsetX, percentageOffsetY, uniqueSelector } =
-            value;
+          const {
+            percentageOffsetX,
+            percentageOffsetY,
+            uniqueSelector,
+            elementIndex,
+          } = value;
 
           updatedCommentDictionary[key] = value;
 
@@ -164,7 +172,17 @@ export const initializePreview = ({
               "Web Studio SDK - could not find the unique selector for this comment",
             );
           } else {
-            const element = document.querySelector(uniqueSelector);
+            let element = null;
+            if (
+              elementIndex === null ||
+              elementIndex === undefined ||
+              elementIndex === -1
+            ) {
+              element = document.querySelector(uniqueSelector);
+            }else{
+              const elements = document.querySelectorAll(uniqueSelector)
+              element = elements[elementIndex]
+            }
             if (element) {
               const coords = getAbsolutePositionFromPercentage(
                 element,
@@ -177,8 +195,10 @@ export const initializePreview = ({
                   x: coords.x,
                   y: coords.y,
                 };
-              }else{
-                console.warn("Web Studio SDK - could not find the absolute position from percentage")
+              } else {
+                console.warn(
+                  "Web Studio SDK - could not find the absolute position from percentage",
+                );
               }
             }
           }

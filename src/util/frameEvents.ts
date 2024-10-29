@@ -51,6 +51,7 @@ export interface ISetCommentCoordsEventArgs {
   percentageOffsetX?: number
   percentageOffsetY?: number
   uniqueSelector: string
+  elementIndex: number
 }
 
 // union type of all possible event arguments
@@ -130,11 +131,13 @@ export const dispatchSetCommentCoordsEvent = ({
   percentageOffsetX,
   percentageOffsetY,
   uniqueSelector,
+  elementIndex
 }: ISetCommentCoordsEventArgs) => {
   invokeFrameEvent("set-comment-coords", {
     percentageOffsetX,
     percentageOffsetY,
     uniqueSelector,
+    elementIndex
   })
 }
 export const dispatchCommentDictionaryUpdatedEvent = ({
