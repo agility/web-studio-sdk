@@ -1,6 +1,6 @@
 {
   "name": "@agility/web-studio-sdk",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Standard Development Kit used to enable Web Studio features in Agility CMS",
   "repository": {
     "type": "git",
