@@ -65,8 +65,10 @@ export function getDeepestElementAtCoordinates(
 function escapeCSSIdentifier(ident: string): string {
   return (
     ident
-      // Escape leading digit or hyphen followed by a digit
-      .replace(/^(-?\d)/, "\\3$1 ")
+      // Escape leading digit
+      .replace(/^(\d)/, "\\3$1 ")
+      // Escape leading hyphen followed by a digit
+      .replace(/^(-\d)/, "\\$1")
       // Escape non-ASCII characters and special characters
       .replace(/([^\x00-\x7F]|[!"#$%&'()*+,.\/:;<=>?@[\]^`{|}~])/g, "\\$&")
   );
