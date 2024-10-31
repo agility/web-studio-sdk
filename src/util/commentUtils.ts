@@ -62,11 +62,13 @@ export function getDeepestElementAtCoordinates(
  * @param {string} ident - The identifier to escape.
  * @returns {string} - The escaped identifier.
  */
-function escapeCSSIdentifier(ident: string) {
-  // Replace any special characters with their escaped versions
-  return ident.replace(
-    /([^\x00-\x7F]|[!"#$%&'()*+,.\/:;<=>?@[\]^`{|}~])/g,
-    "\\$&",
+function escapeCSSIdentifier(ident: string): string {
+  return (
+    ident
+      // Escape leading digit or hyphen followed by a digit
+      .replace(/^(-?\d)/, "\\3$1 ")
+      // Escape non-ASCII characters and special characters
+      .replace(/([^\x00-\x7F]|[!"#$%&'()*+,.\/:;<=>?@[\]^`{|}~])/g, "\\$&")
   );
 }
 
@@ -112,7 +114,7 @@ export function getSelectorIndex(sel: string, x: number, y: number) {
  * @returns {string} - A unique CSS selector that can be used to select the element.
  *
  */
-export function getUniqueSelector(element: Element) {
+export function getUniqueSelector(element: Element): string {
   // Initialize an array to hold parts of the selector path
   let path = [];
 
@@ -178,8 +180,15 @@ export function getAbsolutePositionFromPercentage(
   percentageX: number | undefined,
   percentageY: number | undefined,
 ) {
-  if (!deepestEle || percentageY === null || percentageY === undefined || percentageX === null || percentageX === undefined) return null;
-  
+  if (
+    !deepestEle ||
+    percentageY === null ||
+    percentageY === undefined ||
+    percentageX === null ||
+    percentageX === undefined
+  )
+    return null;
+
   const rect = deepestEle.getBoundingClientRect();
   const style = getComputedStyle(deepestEle);
 
