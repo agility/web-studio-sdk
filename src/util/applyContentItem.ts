@@ -40,18 +40,19 @@ export const applyContentItem = (contentItem: any) => {
             field.textContent = fieldValue
           }
         }
-        
-        if(!fieldEditButton){
-          console.warn('No edit button found for field', fieldName)
-          return;
+
+        if (!fieldEditButton) {
+          console.warn("No edit button found for field", fieldName)
+          return
         }
 
         // make sure to add the edit button back
         field.appendChild(fieldEditButton)
-
       } else if (fieldValue.url) {
         //***  image field
-        const img = field.querySelector("img:not(.agility-field-edit img)") as HTMLImageElement
+        const img = field.querySelector(
+          "img:not(.agility-field-edit img)"
+        ) as HTMLImageElement
 
         if (img && img.src) {
           // update the srcset for the picture source elements

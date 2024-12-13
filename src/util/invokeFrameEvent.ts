@@ -11,12 +11,14 @@ export type TFrameEvents =
   | "sdk-refresh"
   | "set-comment-coords"
   | "comment-dictionary-updated"
+  | "decorator-map-updated"
 
 export const invokeFrameEvent = (
   messageType: TFrameEvents,
   arg: TFrameEventArgs
 ) => {
   const agilityGuid = getGuid(`invoke frame event`)
+
   //send a message to the parent window to let it know we are ready
   window.parent.postMessage(
     {
