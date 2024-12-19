@@ -115,9 +115,7 @@ export const initializePreview = ({
         //set the components
         initComponents()
         //parse the page for fields
-        console.log("Web Studio SDK - ready: parsing page for fields")
         const decoratorMap = generateDecoratorMap()
-        console.log("Web Studio SDK - ready: decoratorMap", decoratorMap)
         if (decoratorMap) {
           dispatchDecoratorMapUpdatedEvent({ decoratorMap })
         }
