@@ -1,8 +1,10 @@
 import { initComponents, initializePreview } from "./util"
 import {
+  dispatchDecoratorMapUpdatedEvent,
   dispatchNavigationEvent,
   INavigationEventArgs,
 } from "./util/frameEvents"
+import { generateDecoratorMap } from "./util/generateDecoratorMap"
 
 /**
  * Agility Preview SDK
@@ -64,11 +66,16 @@ const onLocationChange = () => {
     windowScrollableHeight: document.documentElement.scrollHeight,
     windowHeight: window.innerHeight,
   }
-
   //dispatch the navigation event
   dispatchNavigationEvent(args)
   //initialize the components that may have reloaded
   initComponents()
+  //generate the decorator map
+  const decoratorMap = generateDecoratorMap()
+  //send the decorator map to the parent
+  if (decoratorMap) {
+    dispatchDecoratorMapUpdatedEvent({ decoratorMap })
+  }
 }
 
 const startObserver = () => {
