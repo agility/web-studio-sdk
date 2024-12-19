@@ -1,15 +1,6 @@
-export type TDecoratorMap = Map<number, { [key: number]: string[] }>
+export type TDecoratorMap = Map<number, string[]>
 
 export const generateDecoratorMap = () => {
-  // get the pageID from the document
-  const agilityPageIDElem = document.querySelector("[data-agility-page]")
-  const pageID = parseInt(
-    agilityPageIDElem?.getAttribute("data-agility-page") || ""
-  )
-  if (!pageID) {
-    console.log("Web Studio SDK - no page ID found")
-    return
-  }
   const fieldMap: TDecoratorMap = new Map()
   // find all the components on the page
   const components = document.querySelectorAll("[data-agility-component]")
@@ -37,7 +28,7 @@ export const generateDecoratorMap = () => {
       }
       fieldNames.push(fieldName)
     })
-    fieldMap.set(pageID, { [contentID]: fieldNames })
+    fieldMap.set(contentID, fieldNames)
   })
   return fieldMap
 }
