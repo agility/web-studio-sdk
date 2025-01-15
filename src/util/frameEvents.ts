@@ -2,6 +2,7 @@ import { TFrameEvents, invokeFrameEvent } from "./invokeFrameEvent"
 import { getGuid } from "./getGuid"
 import { off } from "process"
 import { IUpdatedCommentDictionary } from "./initializePreview"
+import { TDecoratorMap } from "./generateDecoratorMap"
 
 export interface IReadyEventArgs {
   //send along the current width, height, and url and status of decorators
@@ -53,6 +54,9 @@ export interface ISetCommentCoordsEventArgs {
   uniqueSelector: string
   elementIndex: number
 }
+export interface IDecoratorMapUpdatedEventArgs {
+  decoratorMap: TDecoratorMap
+}
 
 // union type of all possible event arguments
 export type TFrameEventArgs =
@@ -65,6 +69,7 @@ export type TFrameEventArgs =
   | IRefreshEventArgs
   | ISetCommentCoordsEventArgs
   | ICommentDictionaryUpdatedEventArgs
+  | IDecoratorMapUpdatedEventArgs
   | null
 
 export const dispatchReadyEvent = ({
@@ -131,13 +136,13 @@ export const dispatchSetCommentCoordsEvent = ({
   percentageOffsetX,
   percentageOffsetY,
   uniqueSelector,
-  elementIndex
+  elementIndex,
 }: ISetCommentCoordsEventArgs) => {
   invokeFrameEvent("set-comment-coords", {
     percentageOffsetX,
     percentageOffsetY,
     uniqueSelector,
-    elementIndex
+    elementIndex,
   })
 }
 export const dispatchCommentDictionaryUpdatedEvent = ({
@@ -147,4 +152,9 @@ export const dispatchCommentDictionaryUpdatedEvent = ({
 }
 export const dispatchRefreshEvent = ({ url }: IRefreshEventArgs) => {
   invokeFrameEvent("sdk-refresh", { url })
+}
+export const dispatchDecoratorMapUpdatedEvent = ({
+  decoratorMap,
+}: IDecoratorMapUpdatedEventArgs) => {
+  invokeFrameEvent("decorator-map-updated", { decoratorMap })
 }
