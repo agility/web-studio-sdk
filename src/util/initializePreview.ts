@@ -122,34 +122,44 @@ export const initializePreview = ({
         break
 
       case "get-comment-coords":
-        const { originX, originY } = arg
+        const { originX, originY, calcFallbackX, calcFallbackY, isDragEndEvent, threadId } = arg
         const element = document.elementFromPoint(originX, originY)
-        if (element) {
-          const deepestEle = getDeepestElementAtCoordinates(
-            element,
-            originX,
-            originY
-          )
-
-          if (deepestEle) {
-            const uniqueSelector = getUniqueSelector(deepestEle)
-            const eleIndex = getSelectorIndex(uniqueSelector, originX, originY)
-            const percentageCoords = getRelativePercentage(
-              deepestEle,
-              originX,
-              originY
-            )
-            arg.uniqueSelector = uniqueSelector
-            dispatchSetCommentCoordsEvent({
-              uniqueSelector,
-              percentageOffsetX: percentageCoords?.percentageX,
-              percentageOffsetY: percentageCoords?.percentageY,
-              elementIndex: eleIndex,
-            })
-          }
-        } else {
+        if (!element){
           console.warn("No element found at the specified coordinates.")
+          return
         }
+
+        const deepestEle = getDeepestElementAtCoordinates(
+          element,
+          originX,
+          originY
+        )
+
+        if (!deepestEle){
+          console.warn("Deepest element could not be found")
+          return
+        }  
+
+        const uniqueSelector = getUniqueSelector(deepestEle)
+        const eleIndex = getSelectorIndex(uniqueSelector, originX, originY)
+        const percentageCoords = getRelativePercentage(
+          deepestEle,
+          originX,
+          originY
+        )
+
+        dispatchSetCommentCoordsEvent({
+          uniqueSelector,
+          percentageOffsetX: percentageCoords?.percentageX,
+          percentageOffsetY: percentageCoords?.percentageY,
+          elementIndex: eleIndex,
+          isDragEndEvent: !!isDragEndEvent,
+          threadId,
+          originX,
+          originY,
+          calcFallbackX,
+          calcFallbackY
+        })
       case "update-comment-dictionary": {
         const { commentDictionary } = arg
         // we've received the comment dictionary from the parent, it will be formatted as an ICommmentDictionary. We need to then map over each entry and go through the same process as the comment-create message event and then return an updated dictionary of type IUpdatedCommentDictionary to the parent with the uniqueSelector, offsetX and offsetY added to each entry

@@ -12,6 +12,7 @@ export type TFrameEvents =
   | "set-comment-coords"
   | "comment-dictionary-updated"
   | "decorator-map-updated"
+  | "set-comment-coords-on-drag-end"
 
 export const invokeFrameEvent = (
   messageType: TFrameEvents,

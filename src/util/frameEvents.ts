@@ -53,7 +53,14 @@ export interface ISetCommentCoordsEventArgs {
   percentageOffsetY?: number
   uniqueSelector: string
   elementIndex: number
+  isDragEndEvent?: boolean
+  threadId?: string
+  calcFallbackX?: number
+  calcFallbackY?: number
+  originX?: number
+  originY?: number
 }
+
 export interface IDecoratorMapUpdatedEventArgs {
   decoratorMap: TDecoratorMap
 }
@@ -137,12 +144,24 @@ export const dispatchSetCommentCoordsEvent = ({
   percentageOffsetY,
   uniqueSelector,
   elementIndex,
+  isDragEndEvent,
+  threadId,
+  calcFallbackX,
+  calcFallbackY,
+  originX,
+  originY
 }: ISetCommentCoordsEventArgs) => {
-  invokeFrameEvent("set-comment-coords", {
+  invokeFrameEvent(isDragEndEvent? "set-comment-coords-on-drag-end": "set-comment-coords", {
     percentageOffsetX,
     percentageOffsetY,
     uniqueSelector,
     elementIndex,
+    isDragEndEvent,
+    threadId,
+    calcFallbackX,
+    calcFallbackY,
+    originX,
+    originY
   })
 }
 export const dispatchCommentDictionaryUpdatedEvent = ({
