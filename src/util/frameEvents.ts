@@ -24,11 +24,23 @@ export interface INavigationEventArgs {
 export interface IEditComponentEventArgs {
   contentID: number | null
   pageID: number | null
+  /** Set when the edited component is a list item nested inside another component's
+   * linked-content-list field - the item's own contentID. When this is set, `contentID`
+   * is null and `referenceName` identifies the list instead. */
+  listItemID?: number | null
+  /** The reference name of the linked-content-list field the list item belongs to -
+   * set instead of `contentID` for a nested list item, since the item isn't a page
+   * module and has no per-instance container to resolve a contentID against. */
+  referenceName?: string | null
 }
 export interface IEditFieldEventArgs {
   fieldName: string
   contentID: number | null
   pageID: number | null
+  /** See IEditComponentEventArgs.listItemID. */
+  listItemID?: number | null
+  /** See IEditComponentEventArgs.referenceName. */
+  referenceName?: string | null
 }
 export interface IScrollEventArgs {
   scrollX: number
@@ -106,16 +118,20 @@ export const dispatchNavigationEvent = (args: INavigationEventArgs) => {
 export const dispatchEditComponentEvent = ({
   contentID,
   pageID,
+  listItemID,
+  referenceName,
 }: IEditComponentEventArgs) => {
-  invokeFrameEvent("edit-component", { contentID, pageID })
+  invokeFrameEvent("edit-component", { contentID, pageID, listItemID, referenceName })
 }
 
 export const dispatchEditFieldEvent = ({
   fieldName,
   contentID,
   pageID,
+  listItemID,
+  referenceName,
 }: IEditFieldEventArgs) => {
-  invokeFrameEvent("edit-field", { fieldName, contentID, pageID })
+  invokeFrameEvent("edit-field", { fieldName, contentID, pageID, listItemID, referenceName })
 }
 
 export const dispatchScrollEvent = ({

@@ -2,10 +2,17 @@
  * Apply a content item to a component
  */
 export const applyContentItem = (contentItem: any) => {
-  const components = document.querySelectorAll("[data-agility-component]")
+  // include nested list items (keyed by their own contentID via
+  // data-agility-nested-listitem, since they don't carry data-agility-component) so a
+  // save made to one of them still live-updates the preview.
+  const components = document.querySelectorAll(
+    "[data-agility-component], [data-agility-nested-listitem]"
+  )
   components.forEach((component) => {
     const contentID = parseInt(
-      component.getAttribute("data-agility-component") || ""
+      component.getAttribute("data-agility-component") ||
+        component.getAttribute("data-agility-nested-listitem") ||
+        ""
     )
     if (contentID !== contentItem.contentID) return
 
