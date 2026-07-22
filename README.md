@@ -135,6 +135,37 @@ Also here is a handy Regex that's useful for debugging frame events in the chrom
 /^Web Studio (SDK|CMS)/
 ```
 
+## Deployment
+
+Releases are published to npm automatically via GitHub Actions
+(`.github/workflows/npm-publish.yml`) whenever a `v*` tag is pushed.
+
+**Steps:**
+
+1. Bump `version` in `package.json`, commit it, and merge to `main`.
+2. Tag that commit and push the tag:
+
+   ```bash
+   git checkout main && git pull
+   git tag v1.0.26
+   git push origin v1.0.26
+   ```
+
+The workflow verifies the tag matches `package.json`'s version, builds
+(`npm run build`), and runs `npm publish --access public`. A version with a
+prerelease suffix (e.g. `1.0.26-beta.1`) publishes under that npm dist-tag
+instead of `latest`.
+
+Sites that load the SDK via
+`https://unpkg.com/@agility/web-studio-sdk@latest/dist/index.js` (as shown
+above) pick up a new release as soon as it's published - unpkg serves
+directly from the npm registry, so there's no separate deploy step.
+
+> **Auth:** publishing uses npm's [Trusted Publishing](https://docs.npmjs.com/trusted-publishers)
+> (OIDC) - there's no `NPM_TOKEN` secret to manage. Configure a Trusted
+> Publisher on npmjs.com for `@agility/web-studio-sdk` pointing at this repo
+> and `.github/workflows/npm-publish.yml`.
+
 ## Resources
 
 For docs & help around Agility CMS, please see [Agility CMS Documentation](https://help.agilitycms.com/hc/en-us)
