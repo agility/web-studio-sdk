@@ -7,9 +7,14 @@ const PENCIL_ICON_HTML =
   '<img src="https://cdn.aglty.io/content-manager/images/studio-edit.svg" alt="Edit" />'
 
 // Used for the edit button on a genuine `[data-agility-component]` root (not a nested
-// list item, not a field) - a distinct icon from the default pencil.
+// list item, not a field) - a distinct icon from the default pencil. Sized 20x20 (the
+// viewBox is left at its native 24x24 and scaled down) to match studio-edit.svg's own
+// intrinsic 20x20 size - the width/height CSS in web-studio.scss enforces this too. The
+// leading <rect> mirrors studio-edit.svg's own baked-in fill-opacity:0.3 black backdrop,
+// which is what gives the pencil its darker-gray look on hover (it composites with the
+// button's own gray background) - without it this icon looked lighter/mismatched.
 const COMPONENT_EDIT_ICON_HTML =
-  '<i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 stroke-[1px] transition-all text-white group-hover:text-white"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path></svg></i>'
+  '<i><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-[1px] transition-all text-white group-hover:text-white"><rect width="24" height="24" fill="black" fill-opacity="0.3" stroke="none"></rect><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path></svg></i>'
 
 const addEditButton = (
   el: Element,

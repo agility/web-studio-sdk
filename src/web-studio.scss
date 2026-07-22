@@ -59,8 +59,12 @@ body.agility-live-preview {
       text-align: center;
       opacity: 0;
 
-      img {
+      img,
+      svg {
         margin: 0;
+        width: 20px;
+        height: 20px;
+        display: block;
       }
     }
 
