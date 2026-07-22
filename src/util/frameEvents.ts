@@ -24,11 +24,18 @@ export interface INavigationEventArgs {
 export interface IEditComponentEventArgs {
   contentID: number | null
   pageID: number | null
+  /** Set when this component is a list item nested inside another component's
+   * linked-content-list field (tagged with data-agility-nested-listitem rather than
+   * data-agility-component) - it has no per-instance container of its own, so Content
+   * Manager needs to route to it with an extra listitem- route segment. */
+  isNestedListItem?: boolean
 }
 export interface IEditFieldEventArgs {
   fieldName: string
   contentID: number | null
   pageID: number | null
+  /** See IEditComponentEventArgs.isNestedListItem. */
+  isNestedListItem?: boolean
 }
 export interface IScrollEventArgs {
   scrollX: number
@@ -106,16 +113,18 @@ export const dispatchNavigationEvent = (args: INavigationEventArgs) => {
 export const dispatchEditComponentEvent = ({
   contentID,
   pageID,
+  isNestedListItem,
 }: IEditComponentEventArgs) => {
-  invokeFrameEvent("edit-component", { contentID, pageID })
+  invokeFrameEvent("edit-component", { contentID, pageID, isNestedListItem })
 }
 
 export const dispatchEditFieldEvent = ({
   fieldName,
   contentID,
   pageID,
+  isNestedListItem,
 }: IEditFieldEventArgs) => {
-  invokeFrameEvent("edit-field", { fieldName, contentID, pageID })
+  invokeFrameEvent("edit-field", { fieldName, contentID, pageID, isNestedListItem })
 }
 
 export const dispatchScrollEvent = ({

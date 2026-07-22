@@ -2,14 +2,20 @@ export type TDecoratorMap = Map<number, string[]>
 
 export const generateDecoratorMap = () => {
   const fieldMap: TDecoratorMap = new Map()
-  // find all the components on the page
-  const components = document.querySelectorAll("[data-agility-component]")
+  // find all the components on the page, plus nested list items - each keyed by its
+  // own contentID (a nested list item's own id is data-agility-nested-listitem, not
+  // data-agility-component, since it has no per-instance container of its own)
+  const components = document.querySelectorAll(
+    "[data-agility-component], [data-agility-nested-listitem]"
+  )
   if (!components.length) {
     return
   }
   components.forEach((component) => {
     const contentID = parseInt(
-      component.getAttribute("data-agility-component") || ""
+      component.getAttribute("data-agility-component") ||
+        component.getAttribute("data-agility-nested-listitem") ||
+        ""
     )
     if (!contentID) {
       return
@@ -22,6 +28,12 @@ export const generateDecoratorMap = () => {
     // parse the fields names and add them to the fieldMap
     let fieldNames: string[] = []
     fields.forEach((field) => {
+      // querySelectorAll traverses the whole subtree, so a nested list item's own
+      // fields match here too - skip any field whose nearest enclosing
+      // component/list-item boundary isn't this element, it belongs to that nested
+      // one's own map entry instead.
+      if (field.closest("[data-agility-component], [data-agility-nested-listitem]") !== component) return
+
       const fieldName = field.getAttribute("data-agility-field") || ""
       if (!fieldName) {
         return
