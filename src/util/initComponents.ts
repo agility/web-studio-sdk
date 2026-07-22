@@ -14,7 +14,7 @@ const PENCIL_ICON_HTML =
 // which is what gives the pencil its darker-gray look on hover (it composites with the
 // button's own gray background) - without it this icon looked lighter/mismatched.
 const COMPONENT_EDIT_ICON_HTML =
-  '<i><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-[1px] transition-all text-white group-hover:text-white"><rect width="24" height="24" fill="black" fill-opacity="0.3" stroke="none"></rect><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path></svg></i>'
+  '<i><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="stroke-[1px] transition-all text-white group-hover:text-white"><rect width="24" height="24" fill="black" fill-opacity="0.3" stroke="none"></rect><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path></svg></i>'
 
 const addEditButton = (
   el: Element,
