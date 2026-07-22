@@ -19,6 +19,12 @@ export const applyContentItem = (contentItem: any) => {
 
     //now find all the fields within this component...
     component.querySelectorAll("[data-agility-field]").forEach((field) => {
+      // querySelectorAll traverses the whole subtree, so a nested list item's own
+      // fields match here too - skip any field whose nearest enclosing
+      // component/list-item boundary isn't this element (relevant for a list item
+      // nested inside another list item's own list).
+      if (field.closest("[data-agility-component], [data-agility-nested-listitem]") !== component) return
+
       const fieldName = field.getAttribute("data-agility-field") || ""
 
       //find the field in the content item...

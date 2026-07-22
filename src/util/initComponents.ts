@@ -64,6 +64,12 @@ const decorateComponent = (
 
   //now find all the fields within this component...
   component.querySelectorAll("[data-agility-field]").forEach((field) => {
+    // querySelectorAll traverses the whole subtree, so a nested list item's own fields
+    // match here too, not just this component's own. Skip any field whose *nearest*
+    // enclosing component/list-item boundary isn't this element - it belongs to that
+    // nested one instead, which wires it up (with the right contentID) via its own call.
+    if (field.closest("[data-agility-component], [data-agility-nested-listitem]") !== component) return
+
     field.classList.add("agility-field")
     const fieldName = field.getAttribute("data-agility-field")
 

@@ -28,6 +28,12 @@ export const generateDecoratorMap = () => {
     // parse the fields names and add them to the fieldMap
     let fieldNames: string[] = []
     fields.forEach((field) => {
+      // querySelectorAll traverses the whole subtree, so a nested list item's own
+      // fields match here too - skip any field whose nearest enclosing
+      // component/list-item boundary isn't this element, it belongs to that nested
+      // one's own map entry instead.
+      if (field.closest("[data-agility-component], [data-agility-nested-listitem]") !== component) return
+
       const fieldName = field.getAttribute("data-agility-field") || ""
       if (!fieldName) {
         return
