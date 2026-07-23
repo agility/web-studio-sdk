@@ -20,18 +20,18 @@ Once you have an Agility CMS Instance you will need to install the sdk from npm 
 <script src="https://unpkg.com/@agility/web-studio-sdk@latest/dist/index.js"></script>
 ```
 
-You can stop there if you'd like. But to get the most of the SDK, you'll need to decorate your components, fields, and pages with the data-agility-\* attributes. This will allow the SDK to interact with your website/app, and enable real-time editing. You'll also need to add your guid as a data-agility-guid attribute to the root element of your website/app.
+You can stop there if you'd like. But to get the most of the SDK, you'll need to decorate your components, fields, and pages with the data-agility-\* attributes. This will allow the SDK to interact with your website/app, and enable real-time editing. You'll also need to add your guid as a data-agility-guid attribute to the body element of your website/app.
 
 ```html
 <!DOCTYPE html>
-<html lang="en" data-agility-guid="YOUR_GUID">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
+  <body data-agility-guid="YOUR_GUID">
     <div data-agility-page="YOUR_PAGE_ID">
       <header data-agility-component="YOUR_CONTENT_ID">
         <h1 data-agility-field="title">{{fields.title}}</h1>
@@ -49,7 +49,7 @@ The SDK uses the `data-agility-\*` attributes to interact with your website/app.
 - `data-agility-guid`: This is the guid of your website/app. You can find this in the settings of your website in Agility CMS. The SDK uses this to know which instance your website/app is associated with.
   - Example:
   ```html
-  <html lang="en" data-agility-guid="YOUR_GUID"></html>
+  <body data-agility-guid="YOUR_GUID"></body>
   ```
 - `data-agility-previewbar`: This is a boolean attribute that tells the SDK this is the preview bar element, and allows us to hide it using tailwind class. The SDK uses this to know that element should be hidden.
 
@@ -83,6 +83,13 @@ The SDK uses the `data-agility-\*` attributes to interact with your website/app.
   - Example:
   ```html
   <header data-agility-component="YOUR_COMPONENT_ID"></header>
+  ```
+- `data-agility-nested-listitem`: This is the content id of a list item inside a linked-content-list field. Use this instead of `data-agility-component` for list items that have no per-instance container of their own, so the SDK can still track and enable real-time editing for their fields.
+  - Example:
+  ```html
+  <li data-agility-nested-listitem="YOUR_CONTENT_ID">
+    <h2 data-agility-field="title">{{fields.title}}</h2>
+  </li>
   ```
 - `data-agility-field`: This is the name of the field in Agility CMS. The SDK uses this to know which field is being interacted with, so we can track field-specific events in Web Studio and enable real-time editing of their content.
   - Example:
